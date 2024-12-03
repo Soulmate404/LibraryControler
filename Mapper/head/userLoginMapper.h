@@ -6,7 +6,7 @@
 #define LIBRARYCONTROLLER_USERLOGINMAPPER_H
 void init();
 int CheckUser(int id,char* pass_wd);
-int ResetPass(char* pass);
+int ResetPass(int id,char * pass);
 
 
 #endif //LIBRARYCONTROLLER_USERLOGINMAPPER_H

@@ -65,7 +65,7 @@ void handle_user_menu(int user_type) {
                         break;
                     }
 
-                    if (resetPass(user_id, new_password,confirm_password) == 0) {
+                    if (resetPass(user_id, new_password,confirm_password) != NULL) {
                         printf("密码修改成功。\n");
                     } else {
                         printf("密码修改失败。\n");

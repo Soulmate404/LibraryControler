@@ -1,15 +1,10 @@
 # ninja log v6
 9	716	7545485349559241	CMakeFiles/LibraryController.dir/main.c.obj	41634eebbd6c7d97
-672	819	7547577353784989	LibraryController.exe	e5ade586ddc22e01
-4	742	7547563985237369	CMakeFiles/LibraryController.dir/Controller/code/main.c.obj	b32a80f8d893c43c
-21	837	7547470289620439	CMakeFiles/LibraryController.dir/Mapper/code/UserloginMapper.c.obj	324da05dc8bd9f1c
-6	743	7547576217718937	CMakeFiles/LibraryController.dir/Mapper/code/userLoginMapper.c.obj	c417a430c37599bf
-5	661	7547577347108442	CMakeFiles/LibraryController.dir/Mapper/code/mysqlPointer.c.obj	45e615ff5820b1de
-17	741	7547576217831260	CMakeFiles/LibraryController.dir/Mapper/code/bookLendMapper.c.obj	85b3974256757ca2
-9	870	7548243604656899	CMakeFiles/LibraryController.dir/Controller/code/main.c.obj	b32a80f8d893c43c
-38	876	7548243604956366	CMakeFiles/LibraryController.dir/Mapper/code/mysqlPointer.c.obj	45e615ff5820b1de
-20	877	7548243604776515	CMakeFiles/LibraryController.dir/Mapper/code/userLoginMapper.c.obj	c417a430c37599bf
-29	887	7548243604856340	CMakeFiles/LibraryController.dir/Mapper/code/bookLendMapper.c.obj	85b3974256757ca2
-48	898	7548243605036322	CMakeFiles/LibraryController.dir/Mapper/code/administratorMapper.c.obj	5729c56ba3e1fe1
-6	672	7548245044860093	CMakeFiles/LibraryController.dir/Mapper/code/administratorMapper.c.obj	5729c56ba3e1fe1
 672	802	7548245051529736	LibraryController.exe	c5a5223d3fdeb56c
+6	672	7548245044860093	CMakeFiles/LibraryController.dir/Mapper/code/administratorMapper.c.obj	5729c56ba3e1fe1
+9	756	7549324334885097	CMakeFiles/LibraryController.dir/Controller/code/main.c.obj	b32a80f8d893c43c
+21	837	7547470289620439	CMakeFiles/LibraryController.dir/Mapper/code/UserloginMapper.c.obj	324da05dc8bd9f1c
+20	877	7548243604776515	CMakeFiles/LibraryController.dir/Mapper/code/userLoginMapper.c.obj	c417a430c37599bf
+38	876	7548243604956366	CMakeFiles/LibraryController.dir/Mapper/code/mysqlPointer.c.obj	45e615ff5820b1de
+29	887	7548243604856340	CMakeFiles/LibraryController.dir/Mapper/code/bookLendMapper.c.obj	85b3974256757ca2
+5	775	7549384106347307	CMakeFiles/LibraryController.dir/Controller/code/main.c.obj	b32a80f8d893c43c
