@@ -2,10 +2,11 @@
 #include <string.h>
 #include <time.h>
 #include <mysql.h>
-#include "../../Service/head/userLoginService.h"
-#include "../../Service/head/bookLendService.h"
-#include "E:\LibraryController\Service\head\administratorService.h"
-#include "../../Mapper/head/mysqlPointer.h"
+#include "../../Mapper/code/mysqlPointer.h"
+#include "../../Service/code/adminService.h"
+#include "../../Service/code/userLog.h"
+#include "../../Service/code/bookBorrowService.h"
+#include "../../Mapper/code/UserLogMapper.h"
 
 
 // 欢迎页面
@@ -433,7 +434,7 @@ void handle_admin_menu() {
                 break;
             }
             case 15: {
-                int rows = checkAllBorrow();
+                int rows = checkUserBorrow(0);
                 if (rows ==0) {
 
                 } else {
@@ -486,6 +487,7 @@ void handle_admin_menu() {
 int main() {
     // MYSQL *conn; // 如果使用MySQL，请取消注释并初始化连接
 
+    init();
     welcome_page();
 
     while (1) {

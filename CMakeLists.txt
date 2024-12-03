@@ -10,18 +10,19 @@ link_libraries(libmysql)
 
 
 add_executable(LibraryController Controller/code/main.c
-        Mapper/head/userLoginMapper.h
-        Mapper/head/bookLendMapper.h
-        Mapper/head/administratorMapper.h
-        Service/head/userLoginService.h
-        Service/head/bookLendService.h
-        Service/head/administratorService.h
-        Mapper/code/userLoginMapper.c
-        Mapper/code/userLoginMapper.c
-        Mapper/code/userLoginMapper.c
-        Mapper/code/bookLendMapper.c
-        Mapper/head/mysqlPointer.h
         Mapper/code/mysqlPointer.c
-        Mapper/code/administratorMapper.c
+        Mapper/code/AdminMapper.c
+        Mapper/code/AdminMapper.h
+        Mapper/code/BookBorrowMapper.c
+        Mapper/code/BookBorrowMapper.h
+        Mapper/code/mysqlPointer.h
+        Service/code/adminService.c
+        Service/code/adminService.h
+        Mapper/code/UserLogMapper.c
+        Mapper/code/UserLogMapper.h
+        Service/code/bookBorrowService.c
+        Service/code/bookBorrowService.h
+        Service/code/userLog.c
+        Service/code/userLog.h
 )
 target_link_libraries(LibraryController libmysql)
