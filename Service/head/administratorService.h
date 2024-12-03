@@ -11,6 +11,7 @@ int deleteUser(int id);
 int selectUser(int id);
 int updateAuthority(int id,int authority);
 int checkUserBorrow(int id);
+int checkAllBorrow();
 int checkBooksBorrow(int id);
-char* RootResetPass(int id,char* c1,char* c2);
+char* rootResetPass(int id,char* c1,char* c2);
 #endif //LIBRARYCONTROLLER_ADMINISTRATORSERVICE_H

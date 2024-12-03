@@ -2,50 +2,7 @@
 #include <stdio.h>
 #include "../head/mysqlPointer.h"
 
-int CheckBook(int id) {
-    char ID[50];
-    sprintf(ID, "%d", id);
 
-    char sql[256];
-    strcpy(sql, "SELECT * FROM book WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
-        return -1;
-    }
-
-    if((row= mysql_fetch_row(res))){
-        mysql_free_result(res);
-        return 0;
-    } else{
-        mysql_free_result(res);
-        return -1;
-    }
-}
-int CheckUser(int id) {
-    char ID[50];
-    sprintf(ID, "%d", id);
-
-    char sql[256];
-    strcpy(sql, "SELECT * FROM user WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
-        return -1;
-    }
-
-    if((row= mysql_fetch_row(res))){
-        mysql_free_result(res);
-        return atoi(row[3]);
-    } else{
-        mysql_free_result(res);
-        return -1;
-    }
-}
 MYSQL_ROW SelectUser(int id){
     char ID[50];
     sprintf(ID, "%d", id);
