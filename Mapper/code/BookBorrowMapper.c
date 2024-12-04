@@ -5,7 +5,9 @@
 #include "BookBorrowMapper.h"
 #include <stdio.h>
 #include <mysql.h>
-#include "../code/mysqlPointer.c"
+
+#include "SQLPointer.h"
+
 
 int CheckBook(int id) {
     char ID[50];

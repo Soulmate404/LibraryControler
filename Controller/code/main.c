@@ -2,11 +2,11 @@
 #include <string.h>
 #include <time.h>
 #include <mysql.h>
-#include "../../Mapper/code/mysqlPointer.h"
 #include "../../Service/code/adminService.h"
 #include "../../Service/code/userLog.h"
 #include "../../Service/code/bookBorrowService.h"
 #include "../../Mapper/code/UserLogMapper.h"
+#include "../../Mapper/code/SQLPointer.h"
 
 
 // 欢迎页面
@@ -487,6 +487,7 @@ void handle_admin_menu() {
 int main() {
     // MYSQL *conn; // 如果使用MySQL，请取消注释并初始化连接
 
+    freeSQLResources();
     init();
     welcome_page();
 

@@ -5,7 +5,7 @@
 #include "AdminMapper.h"
 #include <mysql.h>
 #include <stdio.h>
-#include "../code/mysqlPointer.c"
+#include "SQLPointer.h"
 
 
 MYSQL_ROW SelectUser(int id){

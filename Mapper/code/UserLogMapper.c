@@ -5,22 +5,14 @@
 #include "UserLogMapper.h"
 #include <string.h>
 #include "mysql.h"
-#include "../code/mysqlPointer.h"
+
+#include "SQLPointer.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 
 
-const char *server = "localhost";
-const char *user = "root";
-const char *password = "guo12345";
-const char *database = "librarymanager";
-void init(){
-    conn = mysql_init(NULL);
-    if (mysql_real_connect(conn, server, user, password, database, 3306, NULL, 0)) {
-        printf("success\n");
-    }
-}
+
 
 int CheckUserInLog(int id, char* pass_wd) {
     char ID[50];

@@ -56,13 +56,6 @@ build CMakeFiles/LibraryController.dir/Controller/code/main.c.obj: C_COMPILER__L
   OBJECT_DIR = CMakeFiles\LibraryController.dir
   OBJECT_FILE_DIR = CMakeFiles\LibraryController.dir\Controller\code
 
-build CMakeFiles/LibraryController.dir/Mapper/code/mysqlPointer.c.obj: C_COMPILER__LibraryController_unscanned_Debug E$:/LibraryController/Mapper/code/mysqlPointer.c || cmake_object_order_depends_target_LibraryController
-  DEP_FILE = CMakeFiles\LibraryController.dir\Mapper\code\mysqlPointer.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  INCLUDES = -I"C:/Program Files/MySQL/MySQL Server 9.0/include"
-  OBJECT_DIR = CMakeFiles\LibraryController.dir
-  OBJECT_FILE_DIR = CMakeFiles\LibraryController.dir\Mapper\code
-
 build CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj: C_COMPILER__LibraryController_unscanned_Debug E$:/LibraryController/Mapper/code/AdminMapper.c || cmake_object_order_depends_target_LibraryController
   DEP_FILE = CMakeFiles\LibraryController.dir\Mapper\code\AdminMapper.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
@@ -105,6 +98,13 @@ build CMakeFiles/LibraryController.dir/Service/code/userLog.c.obj: C_COMPILER__L
   OBJECT_DIR = CMakeFiles\LibraryController.dir
   OBJECT_FILE_DIR = CMakeFiles\LibraryController.dir\Service\code
 
+build CMakeFiles/LibraryController.dir/Mapper/code/SQLPointer.c.obj: C_COMPILER__LibraryController_unscanned_Debug E$:/LibraryController/Mapper/code/SQLPointer.c || cmake_object_order_depends_target_LibraryController
+  DEP_FILE = CMakeFiles\LibraryController.dir\Mapper\code\SQLPointer.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Program Files/MySQL/MySQL Server 9.0/include"
+  OBJECT_DIR = CMakeFiles\LibraryController.dir
+  OBJECT_FILE_DIR = CMakeFiles\LibraryController.dir\Mapper\code
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LibraryController
@@ -113,7 +113,7 @@ build CMakeFiles/LibraryController.dir/Service/code/userLog.c.obj: C_COMPILER__L
 #############################################
 # Link the executable LibraryController.exe
 
-build LibraryController.exe: C_EXECUTABLE_LINKER__LibraryController_Debug CMakeFiles/LibraryController.dir/Controller/code/main.c.obj CMakeFiles/LibraryController.dir/Mapper/code/mysqlPointer.c.obj CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj CMakeFiles/LibraryController.dir/Mapper/code/BookBorrowMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/adminService.c.obj CMakeFiles/LibraryController.dir/Mapper/code/UserLogMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/bookBorrowService.c.obj CMakeFiles/LibraryController.dir/Service/code/userLog.c.obj
+build LibraryController.exe: C_EXECUTABLE_LINKER__LibraryController_Debug CMakeFiles/LibraryController.dir/Controller/code/main.c.obj CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj CMakeFiles/LibraryController.dir/Mapper/code/BookBorrowMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/adminService.c.obj CMakeFiles/LibraryController.dir/Mapper/code/UserLogMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/bookBorrowService.c.obj CMakeFiles/LibraryController.dir/Service/code/userLog.c.obj CMakeFiles/LibraryController.dir/Mapper/code/SQLPointer.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -llibmysql  -llibmysql  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/PROGRA~1/MySQL/MYSQLS~1.0/lib
