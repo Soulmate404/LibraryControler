@@ -27,8 +27,9 @@ int CheckUserInLog(int id, char* pass_wd) {
     mysql_query(conn,sql);
     res= mysql_use_result(conn);
     if((row= mysql_fetch_row(res))){
+        int a= atoi(row[3]);
         mysql_free_result(res);
-        return atoi(row[3]);
+        return a;
     } else{
         mysql_free_result(res);
         return -1;

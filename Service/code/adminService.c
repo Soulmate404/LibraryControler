@@ -10,7 +10,7 @@
 
 
 int addBooks(int id,char* name,char* writer,int last_num,char* position) {
-    if (CheckBook(id) == 0) {
+    if (CheckBook(id) != 0) {
         return AddBooks(id,name,writer,last_num,position);
     }else {
         return -1;
@@ -72,13 +72,14 @@ int checkUserBorrow(int id) {
         if (rows->data == NULL) {
             return -1;
         }else {
-            while (rows->next != NULL) {
+            while (rows) {
                 for (int i = 0; i < 4; i++) {
                     printf("%s\t",rows->data[i]);
-                    rows->next = rows->next->next;
                 }
-                return 0;
+               rows=rows->next;
+
             }
+            return 0;
         }
     }else {
         MYSQL_ROWS rows2= CheckAllBorrow();
@@ -86,14 +87,16 @@ int checkUserBorrow(int id) {
         if (rows->data == NULL) {
             return -1;
         }else {
-            while (rows->next != NULL) {
+            while (rows) {
                 for (int i = 0; i < 4; i++) {
                     printf("%s\t",rows->data[i]);
-                    rows->next = rows->next->next;
+
                 }
-                return 0;
+                rows=rows->next;
+
             }
-        }
+            return 0;
+       }
     }
 }
 int checkBooksBorrow(int id) {
@@ -102,25 +105,26 @@ int checkBooksBorrow(int id) {
     if (rows->data == NULL) {
         return -1;
     }else {
-        while (rows->next != NULL) {
+        while (rows) {
             for (int i = 0; i < 4; i++) {
                 printf("%s\t",rows->data[i]);
-                rows->next = rows->next->next;
+
             }
-            return 0;
+            rows = rows->next;
         }
+        return 0;
     }
 }
 
-char* rootResetPass(int id,char* c1,char* c2) {
+int rootResetPass(int id,char* c1,char* c2) {
     if (CheckUser(id) > 0 || CheckUser(id) == 0) {
         if (strcmp(c1,c2)==0) {
             RootResetPass(id,c1);
-            return c1;
+            return 0;
         }else {
-            return NULL;
+            return -1;
         }
     }else {
-        return NULL;
+        return -1;
     }
 }

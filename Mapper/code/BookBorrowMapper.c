@@ -55,7 +55,7 @@ int GetBookNum(int id) {
         return -1;
     }
 }
-MYSQL_ROW SelectByID(int id){
+MYSQL_ROW SelectByID(int id) {
     char ID[50];
     sprintf(ID, "%d", id);
 
@@ -64,13 +64,51 @@ MYSQL_ROW SelectByID(int id){
     strcat(sql, ID);
     strcat(sql, ";");
 
-    if (mysql_query(conn, sql)) {
+    // 执行查询
+    if (mysql_real_query(conn, sql, strlen(sql))) {
         fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
         return NULL;
     }
-    res= mysql_use_result(conn);
-    return mysql_fetch_row(res);
+
+    // 获取查询结果
+    res = mysql_store_result(conn);
+    if (res == NULL) {
+        fprintf(stderr, "mysql_store_result() failed. Error: %s\n", mysql_error(conn));
+        return NULL;
+    }
+
+    // 确保至少有一行数据
+    MYSQL_ROW mysqlRow = mysql_fetch_row(res);
+    if (mysqlRow == NULL) {
+        mysql_free_result(res);  // 不要忘记释放资源
+        return NULL;
+    }
+
+    // 获取结果集中的字段数量
+    size_t num_fields = mysql_num_fields(res);
+
+    // 复制结果到动态分配的内存
+    MYSQL_ROW result = malloc(sizeof(char*) * num_fields);
+    if (result == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        mysql_free_result(res);
+        return NULL;
+    }
+
+    // 逐个复制每个字段的内容
+    for (size_t i = 0; i < num_fields; ++i) {
+        if (mysqlRow[i]) {
+            result[i] = strdup(mysqlRow[i]);
+        } else {
+            result[i] = NULL;
+        }
+    }
+
+    mysql_free_result(res);  // 确保释放结果集
+
+    return result;
 }
+
 MYSQL_ROWS SelectByName(char* name){
     char sql[256];
     strcpy(sql, "SELECT * FROM book WHERE name like ");
@@ -85,15 +123,24 @@ MYSQL_ROWS SelectByName(char* name){
         s.next=NULL;
         return  s;
     }
-    MYSQL_ROWS* left,*right,*head;
-    res= mysql_use_result(conn);
-    head->data=left->data= mysql_fetch_row(res);
-    while(( right->data= mysql_fetch_row(res))){
-        left->next= right;
+    MYSQL_ROWS* head = NULL;
+    MYSQL_ROWS* left = NULL;
+    MYSQL_ROWS* right = NULL;
+    res = mysql_store_result(conn);
+    MYSQL_ROW row1 = mysql_fetch_row(res);
+    if (row1) {
+        head = left = malloc(sizeof(MYSQL_ROWS));
+        head->data = row1;
+        while ((right = malloc(sizeof(MYSQL_ROWS))) && (right->data = mysql_fetch_row(res))) {
+            left->next = right;
+            left = right;
+        }
+        left->next = NULL;
     }
-    left->next=NULL;
+    mysql_free_result(res);
     return *head;
 }
+
 int AddBorrow(int userid, char* name, int bookid, char* time) {
     if (conn == NULL) {
         fprintf(stderr, "Database connection is not initialized.\n");

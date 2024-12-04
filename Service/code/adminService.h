@@ -12,5 +12,5 @@ int selectUser(int id);
 int updateAuthority(int id,int authority);
 int checkUserBorrow(int id);
 int checkBooksBorrow(int id);
-char* rootResetPass(int id,char* c1,char* c2);
+int rootResetPass(int id,char* c1,char* c2);
 #endif //LIBRARYCONTROLLER_ADMINSERVICE_H

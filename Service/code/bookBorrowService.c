@@ -25,12 +25,14 @@ int selectByName(char* name) {
     if (rows->data == NULL) {
         return -1;
     }
-    while (rows->next != NULL) {
-        for (int i = 0; i < 4; i++) {
+    while (rows!=NULL) {
+        for (int i = 0; i < 5; i++) {
             printf("%s\t",rows->data[i]);
         }
-        rows->next= rows->next->next;
+        rows=rows->next;
+
     }
+    return 0;
 }
 int addBorrow(int userid,char* name,int bookid,char* time) {
     if (CheckBook(bookid) == 0) {

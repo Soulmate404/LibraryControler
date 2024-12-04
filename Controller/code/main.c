@@ -66,7 +66,7 @@ void handle_user_menu(int user_type) {
                         break;
                     }
 
-                    if (resetPass(user_id, new_password,confirm_password) != NULL) {
+                    if (resetPass(user_id, new_password,confirm_password) ==0) {
                         printf("密码修改成功。\n");
                     } else {
                         printf("密码修改失败。\n");
@@ -230,6 +230,7 @@ void handle_admin_menu() {
 
                 int result = selectByName(book_name);
                 if (result==0) {
+                    printf("success");
 
                 } else {
                     printf("没有找到该书。\n");
@@ -242,6 +243,7 @@ void handle_admin_menu() {
                 char borrow_time[20]; // 假定时间字符串长度不超过20
                 time_t now;
                 struct tm *current_time;
+                char book_name[100];
 
                 time(&now);
                 current_time = localtime(&now);
@@ -250,6 +252,9 @@ void handle_admin_menu() {
                 printf("请输入用户ID：");
                 scanf("%d", &user_id);
                 getchar(); // 清除缓冲区中的换行符
+                printf("请输入书名：");
+                fgets(book_name, sizeof(book_name), stdin);
+                book_name[strcspn(book_name, "\n")] = 0;
 
                 printf("请输入图书的ID码：");
                 scanf("%d", &book_id);
