@@ -109,61 +109,96 @@ MYSQL_ROW SelectByID(int id) {
     return result;
 }
 
-MYSQL_ROWS SelectByName(char* name){
-    char sql[256];
-    strcpy(sql, "SELECT * FROM book WHERE name like ");
-    strcat(sql, "'%");
-    strcat(sql, name);
-    strcat(sql, "%';");
+MYSQL_RES * SelectByName(char *name) {
 
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
-        MYSQL_ROWS s;
-        s.data=NULL;
-        s.next=NULL;
-        return  s;
+    char query[256];
+    char Name[100];
+    strcpy(Name,"%");
+    strcat(Name,name);
+    strcat(Name,"%");
+    snprintf(query, sizeof(query), "SELECT * FROM book WHERE name like '%s'", Name);
+
+
+    if (mysql_query(conn, query)) {
+        fprintf(stderr, "SELECT query failed: %s\n", mysql_error(conn));
+        MYSQL_RES *d = NULL;
+        d->data=NULL;
+        return  d; // 查询失败，返回 NULL
     }
-    MYSQL_ROWS* head = NULL;
-    MYSQL_ROWS* left = NULL;
-    MYSQL_ROWS* right = NULL;
+
+
     res = mysql_store_result(conn);
-    MYSQL_ROW row1 = mysql_fetch_row(res);
-    if (row1) {
-        head = left = malloc(sizeof(MYSQL_ROWS));
-        head->data = row1;
-        while ((right = malloc(sizeof(MYSQL_ROWS))) && (right->data = mysql_fetch_row(res))) {
-            left->next = right;
-            left = right;
-        }
-        left->next = NULL;
+    if (res == NULL) {
+        fprintf(stderr, "Store result failed: %s\n", mysql_error(conn));
+        MYSQL_RES *d;
+        d->data=NULL;
+        return  d; // 获取结果失败，返回 NULL
     }
-    mysql_free_result(res);
-    return *head;
-}
 
+
+    if (mysql_num_rows(res) == 0) {
+        printf("No rows found for name: %s\n", name);
+        mysql_free_result(res);  // 释放结果集
+        MYSQL_RES *d;
+        d->data=NULL;
+        return  d;
+    }
+
+    return res;  // 返回查询结果集
+}
 int AddBorrow(int userid, char* name, int bookid, char* time) {
     if (conn == NULL) {
-        fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
 
 
-    char sql[512];
-    sprintf(sql, "INSERT INTO borrow (user_id, name, book_id, borrow_time) VALUES (%d, '%s', %d, '%s');",
-            userid, name ? name : "NULL", bookid, time ? time : "NULL");
-
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    const char *sql = "INSERT INTO borrow (user_id, name, book_id, borrow_time) VALUES (?, ?, ?, ?)";
+    if (mysql_stmt_prepare(stmt, sql, strlen(sql))) {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
-    if (mysql_affected_rows(conn) > 0) {
+
+    MYSQL_BIND bind[4];
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = &userid;
+    bind[0].is_null = 0;
+    bind[0].length = 0;
+
+    bind[1].buffer_type = MYSQL_TYPE_STRING;
+    bind[1].buffer = name ? name : "NULL";
+    bind[1].buffer_length = name ? strlen(name) : 4;
+    bind[1].is_null = 0;
+    bind[1].length = NULL;
+
+    bind[2].buffer_type = MYSQL_TYPE_LONG;
+    bind[2].buffer = &bookid;
+    bind[2].is_null = 0;
+    bind[2].length = 0;
+
+    bind[3].buffer_type = MYSQL_TYPE_STRING;
+    bind[3].buffer = time ? time : "NULL";
+    bind[3].buffer_length = time ? strlen(time) : 4;
+    bind[3].is_null =0;
+    bind[3].length = NULL;
+
+    if (mysql_stmt_bind_param(stmt, bind)) {
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt)) {
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
-
-
 }
 int DeleteBorrow(int userid,int bookid){
     char uID[50];

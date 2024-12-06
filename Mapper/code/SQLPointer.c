@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include "SQLPointer.h"
-const char *server = "localhost";
+const char *server = "192.168.5.21";
 const char *user = "root";
 const char *password = "guo12345";
 const char *database = "librarymanager";

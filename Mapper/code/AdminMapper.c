@@ -413,66 +413,35 @@ MYSQL_ROWS CheckUserBorrow(int id){
         s.next=NULL;
         return  s;
     }
-    MYSQL_ROWS* head = NULL;
-    MYSQL_ROWS* left = NULL;
-    MYSQL_ROWS* right = NULL;
+    MYSQL_ROWS *head = NULL;
+    MYSQL_ROWS *left = NULL;
+    MYSQL_ROWS *right = NULL;
+    MYSQL_ROW row1 = NULL;
+    res = mysql_use_result(conn);
 
-    // 获取查询结果
-    res = mysql_store_result(conn);
-    if (res == NULL) {
-        fprintf(stderr, "mysql_use_result() failed. Error: %s\n", mysql_error(conn));
+    while ((row1 = mysql_fetch_row(res)) != NULL) {
+        right = malloc(sizeof(MYSQL_ROWS));
+        if (!right) {
+            fprintf(stderr, "Memory allocation error\n");
+            break;
+        }
+        right->data = row1;
+        right->next = NULL;
+
+        if (head == NULL) {
+            head = left = right;
+        } else {
+            left->next = right;
+            left = right;
+        }
+    }
+    if (head == NULL) {
         MYSQL_ROWS s;
         s.data = NULL;
         s.next = NULL;
         return s;
     }
-
-    // 逐行处理数据
-    MYSQL_ROW row1 = mysql_fetch_row(res);
-    if (row1) {
-        head = left = malloc(sizeof(MYSQL_ROWS));
-        if (head == NULL) {
-            fprintf(stderr, "Memory allocation failed\n");
-            mysql_free_result(res);
-            MYSQL_ROWS s;
-            s.data = NULL;
-            s.next = NULL;
-            return s;
-        }
-
-        // 复制第一行的数据
-        head->data = malloc(sizeof(char*) * mysql_num_fields(res));
-        for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-            head->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-        }
-        head->next = NULL;
-
-        left = head;
-
-        // 继续处理剩下的行
-        while ((row1 = mysql_fetch_row(res)) != NULL) {
-            right = malloc(sizeof(MYSQL_ROWS));
-            if (right == NULL) {
-                fprintf(stderr, "Memory allocation failed\n");
-                mysql_free_result(res);
-                return *head;  // 返回已经创建的链表
-            }
-
-            // 复制当前行的数据
-            right->data = malloc(sizeof(char*) * mysql_num_fields(res));
-            for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-                right->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-            }
-
-            // 链接到上一个节点
-            left->next = right;
-            left = right;
-            right->next = NULL;
-        }
-    }
-
-    mysql_free_result(res);  // 释放结果集
-
+    mysql_free_result(res);
     return *head;
 }
 
@@ -489,67 +458,37 @@ MYSQL_ROWS CheckAllBorrow() {
         return s;
     }
 
-    MYSQL_ROWS* head = NULL;
-    MYSQL_ROWS* left = NULL;
-    MYSQL_ROWS* right = NULL;
+    MYSQL_ROWS *head = NULL;
+    MYSQL_ROWS *left = NULL;
+    MYSQL_ROWS *right = NULL;
+    MYSQL_ROW row1 = NULL;
+    res = mysql_use_result(conn);
 
-    // 获取查询结果
-    MYSQL_RES *res = mysql_use_result(conn);
-    if (res == NULL) {
-        fprintf(stderr, "mysql_use_result() failed. Error: %s\n", mysql_error(conn));
+    while ((row1 = mysql_fetch_row(res)) != NULL) {
+        right = malloc(sizeof(MYSQL_ROWS));
+        if (!right) {
+            fprintf(stderr, "Memory allocation error\n");
+            break;
+        }
+        right->data = row1;
+        right->next = NULL;
+
+        if (head == NULL) {
+            head = left = right;
+        } else {
+            left->next = right;
+            left = right;
+        }
+    }
+    if (head == NULL) {
         MYSQL_ROWS s;
         s.data = NULL;
         s.next = NULL;
         return s;
     }
-
-    // 逐行处理数据
-    MYSQL_ROW row1 = mysql_fetch_row(res);
-    if (row1) {
-        head = left = malloc(sizeof(MYSQL_ROWS));
-        if (head == NULL) {
-            fprintf(stderr, "Memory allocation failed\n");
-            mysql_free_result(res);
-            MYSQL_ROWS s;
-            s.data = NULL;
-            s.next = NULL;
-            return s;
-        }
-
-        // 复制第一行的数据
-        head->data = malloc(sizeof(char*) * mysql_num_fields(res));
-        for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-            head->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-        }
-        head->next = NULL;
-
-        left = head;
-
-        // 继续处理剩下的行
-        while ((row1 = mysql_fetch_row(res)) != NULL) {
-            right = malloc(sizeof(MYSQL_ROWS));
-            if (right == NULL) {
-                fprintf(stderr, "Memory allocation failed\n");
-                mysql_free_result(res);
-                return *head;  // 返回已经创建的链表
-            }
-
-            // 复制当前行的数据
-            right->data = malloc(sizeof(char*) * mysql_num_fields(res));
-            for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-                right->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-            }
-
-            // 链接到上一个节点
-            left->next = right;
-            left = right;
-            right->next = NULL;
-        }
-    }
-
-    mysql_free_result(res);  // 释放结果集
-
+    mysql_free_result(res);
     return *head;
+
 }
 
 MYSQL_ROWS CheckBooksBorrow(int id){
@@ -567,90 +506,81 @@ MYSQL_ROWS CheckBooksBorrow(int id){
         s.next=NULL;
         return  s;
     }
-    MYSQL_ROWS* head = NULL;
-    MYSQL_ROWS* left = NULL;
-    MYSQL_ROWS* right = NULL;
+    MYSQL_ROWS *head = NULL;
+    MYSQL_ROWS *left = NULL;
+    MYSQL_ROWS *right = NULL;
+    MYSQL_ROW row1 = NULL;
+    res = mysql_use_result(conn);
 
-    // 获取查询结果
-    MYSQL_RES *res = mysql_use_result(conn);
-    if (res == NULL) {
-        fprintf(stderr, "mysql_use_result() failed. Error: %s\n", mysql_error(conn));
+    while ((row1 = mysql_fetch_row(res)) != NULL) {
+        right = malloc(sizeof(MYSQL_ROWS));
+        if (!right) {
+            fprintf(stderr, "Memory allocation error\n");
+            break;
+        }
+        right->data = row1;
+        right->next = NULL;
+
+        if (head == NULL) {
+            head = left = right;
+        } else {
+            left->next = right;
+            left = right;
+        }
+    }
+    if (head == NULL) {
         MYSQL_ROWS s;
         s.data = NULL;
         s.next = NULL;
         return s;
     }
-
-    // 逐行处理数据
-    MYSQL_ROW row1 = mysql_fetch_row(res);
-    if (row1) {
-        head =malloc(sizeof(MYSQL_ROWS));
-        if (head == NULL) {
-            fprintf(stderr, "Memory allocation failed\n");
-            mysql_free_result(res);
-            MYSQL_ROWS s;
-            s.data = NULL;
-            s.next = NULL;
-            return s;
-        }
-
-        // 复制第一行的数据
-        head->data = malloc(sizeof(char*) * mysql_num_fields(res));
-        for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-            head->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-        }
-        head->next = NULL;
-
-        left = head;
-
-        // 继续处理剩下的行
-        while ((row1 = mysql_fetch_row(res)) != NULL) {
-            right = malloc(sizeof(MYSQL_ROWS));
-            if (right == NULL) {
-                fprintf(stderr, "Memory allocation failed\n");
-                mysql_free_result(res);
-                return *head;  // 返回已经创建的链表
-            }
-
-            // 复制当前行的数据
-            right->data = malloc(sizeof(char*) * mysql_num_fields(res));
-            for (unsigned int i = 0; i < mysql_num_fields(res); ++i) {
-                right->data[i] = row1[i] ? strdup(row1[i]) : NULL;
-            }
-
-            // 链接到上一个节点
-            left->next = right;
-            left = right;
-            right->next = NULL;
-        }
-    }
-
-    mysql_free_result(res);  // 释放结果集
-
+    mysql_free_result(res);
     return *head;
+
 }
-int RootResetPass(int id,char* pass){
-    char ID[50];
-    sprintf(ID, "%d", id);
-
-
-    char sql[256];
-    strcpy(sql, "UPDATE user SET pass_wd = '");
-    strcat(sql, pass);
-    strcat(sql, "' WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+int RootResetPass( int id, char *pass) {
+    if(pass==NULL){
+        return -1;
+    }
+    const char *sql = "UPDATE user SET pass_wd = '?' WHERE id = ?";
+    stmt = mysql_stmt_init(conn);
+    if (!stmt) {
+        fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
 
+    if (mysql_stmt_prepare(stmt, sql, strlen(sql))) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+    char ID[50];
+    sprintf(ID,"%d",id);
 
-    if (mysql_affected_rows(conn) > 0) {
+    MYSQL_BIND bind[2];
+    bind[0].buffer_type = MYSQL_TYPE_STRING;
+    bind[0].buffer = (char *)pass;
+    bind[0].buffer_length = strlen(pass);
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer = (char *)ID;
+
+    if (mysql_stmt_bind_param(stmt, bind)) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt)) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
 }

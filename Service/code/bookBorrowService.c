@@ -8,29 +8,51 @@
 
 int selectByID(int id) {
     MYSQL_ROW row = SelectByID(id);
+    char a[500];
+
     if (row == NULL) {
         return -1;
     }
-    else{
-        for (int i=0;i<4;i++) {
-            printf("%s\t",row[i]);
+
+    a[0] = '\0';
+
+    for (int i = 0; i < 4; i++) {
+        if (row[i] != NULL) {
+            if (i == 0) {
+                strcpy(a, row[i]);
+                strcat(a, "\t");
+            } else if (i == 3) {
+                strcat(a, row[i]);
+            } else {
+                strcat(a, row[i]);
+                strcat(a, "\t");
+            }
         }
-        return 0;
     }
+    char s[500];
+    strcpy(s,a);
+
+    printf("%s\n", s);
+
+    return 0;
 }
 
 int selectByName(char* name) {
-    MYSQL_ROWS rows1= SelectByName(name);
-    MYSQL_ROWS *rows = &rows1;
-    if (rows->data == NULL) {
+    char *found = strchr(name, ';');
+    if(found!=NULL){
         return -1;
     }
-    while (rows!=NULL) {
-        for (int i = 0; i < 5; i++) {
-            printf("%s\t",rows->data[i]);
+    MYSQL_RES *mysqlRes= SelectByName(name);
+    if(mysql_num_rows(mysqlRes) == 0){
+        return -1;
+    }
+    MYSQL_ROW row;
+    unsigned int filed= mysql_num_fields(mysqlRes);
+    while((row= mysql_fetch_row(mysqlRes))){
+        for(int i=0;i<filed;i++){
+            printf("%s\t",row[i]);
         }
-        rows=rows->next;
-
+        printf("\n");
     }
     return 0;
 }

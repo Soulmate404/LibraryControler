@@ -10,7 +10,7 @@
 int CheckBook(int id);
 int GetBookNum(int id);
 MYSQL_ROW SelectByID(int id);
-MYSQL_ROWS SelectByName(char* name);
+MYSQL_RES * SelectByName(char* name);
 int AddBorrow(int userid, char* name, int bookid, char* time);
 int DeleteBorrow(int userid,int bookid);
 

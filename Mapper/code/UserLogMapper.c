@@ -7,11 +7,8 @@
 #include "mysql.h"
 
 #include "SQLPointer.h"
-#include <stdio.h>
 #include <stdlib.h>
-
-
-
+#include <stdio.h>
 
 
 int CheckUserInLog(int id, char* pass_wd) {
@@ -35,30 +32,50 @@ int CheckUserInLog(int id, char* pass_wd) {
         return -1;
     }
 }
-int ResetPass(int id,char* pass) {
-
-
-    char ID[50];
-    sprintf(ID, "%d", id);
-
-
-    char sql[256];
-    strcpy(sql, "UPDATE user SET pass_wd = '");
-    strcat(sql, pass);
-    strcat(sql, "' WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+int ResetPass(int id, char* pass) {
+    if (conn == NULL) {
+        return -1;
+    }
+    if(pass==NULL){
         return -1;
     }
 
 
-    if (mysql_affected_rows(conn) > 0) {
+
+    const char *sql = "UPDATE user SET pass_wd = ? WHERE id = ?";
+    if (mysql_stmt_prepare(stmt, sql, strlen(sql))) {
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    MYSQL_BIND bind[2];
+
+    bind[0].buffer_type = MYSQL_TYPE_STRING;
+    bind[0].buffer = pass;
+    bind[0].buffer_length = strlen(pass);
+    bind[0].is_null = 0;
+    bind[0].length = NULL;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer = &id;
+    bind[1].is_null = 0;
+    bind[1].length = 0;
+
+    if (mysql_stmt_bind_param(stmt, bind)) {
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt)) {
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
 }
