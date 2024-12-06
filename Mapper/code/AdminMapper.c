@@ -100,117 +100,304 @@ MYSQL_ROW SelectUser(int id){
     return mysqlRow;
 }
 
-int AddBooks(int id,char* name,char* writer,int last_num,char* position){
+int AddBooks(int id, char* name, char* writer, int last_num,  char* position) {
     if (conn == NULL) {
         fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
 
 
-    char sql[512];
-    sprintf(sql, "INSERT INTO book (id, name, writer, remaining_quantity,position) VALUES (%d, '%s','%s', %d,'%s');",
-            id, name ? name : "NULL", writer?writer:"NULL",last_num,position?position:"NULL");
+    const char* sql = "INSERT INTO book (id, name, writer, remaining_quantity, position) VALUES (?, ?, ?, ?, ?)";
 
 
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed\n");
         return -1;
     }
-    if (mysql_affected_rows(conn) > 0) {
+
+
+    if (mysql_stmt_prepare(stmt, sql, strlen(sql)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+
+    MYSQL_BIND bind[5];
+
+
+    memset(bind, 0, sizeof(bind));
+
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = &id;
+    bind[0].is_null = 0;
+    bind[0].length = 0;
+
+
+    bind[1].buffer_type = MYSQL_TYPE_STRING;
+    bind[1].buffer = (char*)name;
+    bind[1].buffer_length = strlen(name);
+    bind[1].is_null = 0;
+    bind[1].length = NULL;
+
+
+    bind[2].buffer_type = MYSQL_TYPE_STRING;
+    bind[2].buffer = (char*)writer;
+    bind[2].buffer_length = strlen(writer);
+    bind[2].is_null = 0;
+    bind[2].length = NULL;
+
+
+    bind[3].buffer_type = MYSQL_TYPE_LONG;
+    bind[3].buffer = &last_num;
+    bind[3].is_null = 0;
+    bind[3].length = 0;
+
+
+    bind[4].buffer_type = MYSQL_TYPE_STRING;
+    bind[4].buffer = (char*)position;
+    bind[4].buffer_length = strlen(position);
+    bind[4].is_null = 0;
+    bind[4].length = NULL;
+
+
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
 }
-int AddUser(int id,char* name,char* pass_wd,int authority){
+int AddUser( int id,  char* name, char* pass_wd, int authority) {
     if (conn == NULL) {
         fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
 
 
-    char sql[512];
-    sprintf(sql, "INSERT INTO user (id, name, pass_wd,authority) VALUES (%d, '%s','%s', %d);",
-            id, name ? name : "NULL", pass_wd?pass_wd:"NULL",authority);
+    const char* query = "INSERT INTO user (id, name, pass_wd, authority) VALUES (?, ?, ?, ?)";
 
 
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
-    if (mysql_affected_rows(conn) > 0) {
-        return 0;
-    } else {
+
+
+    if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
         return -1;
+    }
+
+
+    MYSQL_BIND bind[4];
+
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = (char*)&id;
+    bind[0].is_null = 0;
+
+
+    bind[1].buffer_type = MYSQL_TYPE_STRING;
+    bind[1].buffer = (char*)name;
+    bind[1].buffer_length = (name != NULL) ? strlen(name) : 0;
+    bind[1].is_null =0;
+
+
+    bind[2].buffer_type = MYSQL_TYPE_STRING;
+    bind[2].buffer = (char*)pass_wd;
+    bind[2].buffer_length = (pass_wd != NULL) ? strlen(pass_wd) : 0;
+    bind[2].is_null = 0;
+
+
+    bind[3].buffer_type = MYSQL_TYPE_LONG;
+    bind[3].buffer = (char*)&authority;
+    bind[3].is_null = 0;
+
+
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
+        return 0;  // 插入成功
+    } else {
+        mysql_stmt_free_result(stmt);
+        return -1;  // 插入失败
     }
 }
-int DeleteBook(int id){
-    char ID[50];
-    sprintf(ID, "%d", id);
-
-
-    char sql[256];
-    strcpy(sql, "DELETE FROM book WHERE id= ");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+int DeleteBook( int id) {
+    if (conn == NULL) {
+        fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
-    if (mysql_affected_rows(conn) > 0) {
-        return 0;
-    } else {
+
+
+    const char *query = "DELETE FROM book WHERE id = ?";
+
+
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
+    }
+
+
+    if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    MYSQL_BIND bind[1];
+
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = (char*)&id;
+    bind[0].is_null = 0;
+
+
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
+        return 0;  // 删除成功
+    } else {
+        mysql_stmt_free_result(stmt);
+        return -1;  // 删除失败
     }
 }
 int DeleteUser(int id){
-    char ID[50];
-    sprintf(ID, "%d", id);
 
+    const char *query = "DELETE FROM user WHERE id = ?";
 
-    char sql[256];
-    strcpy(sql, "DELETE FROM user WHERE id= ");
-    strcat(sql, ID);
-    strcat(sql, ";");
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
-    if (mysql_affected_rows(conn) > 0) {
+
+    if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    MYSQL_BIND bind[1];
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = (char *)&id;
+    bind[0].is_null = 0;
+
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
 }
-int UpdateUserAuthority(int id,int authority){
-    char ID[50];
-    sprintf(ID, "%d", id);
-    char a[50];
-    sprintf(a, "%d", authority);
 
+int UpdateUserAuthority(int id, int authority){
 
-    char sql[256];
-    strcpy(sql, "UPDATE user SET authority = ");
-    strcat(sql, a);
-    strcat(sql, "' WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
+    const char *query = "UPDATE user SET authority = ? WHERE id = ?";
 
-
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
 
+    if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
 
-    if (mysql_affected_rows(conn) > 0) {
+    MYSQL_BIND bind[2];
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = (char *)&authority;
+    bind[0].is_null = 0;
+
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer = (char *)&id;
+    bind[1].is_null = 0;
+
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_free_result(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_affected_rows(stmt) > 0) {
+        mysql_stmt_free_result(stmt);
         return 0;
     } else {
+        mysql_stmt_free_result(stmt);
         return -1;
     }
 }
+
 MYSQL_ROWS CheckUserBorrow(int id){
     char ID[50];
     sprintf(ID, "%d", id);
@@ -231,7 +418,7 @@ MYSQL_ROWS CheckUserBorrow(int id){
     MYSQL_ROWS* right = NULL;
 
     // 获取查询结果
-    MYSQL_RES *res = mysql_store_result(conn);
+    res = mysql_store_result(conn);
     if (res == NULL) {
         fprintf(stderr, "mysql_use_result() failed. Error: %s\n", mysql_error(conn));
         MYSQL_ROWS s;
@@ -397,7 +584,7 @@ MYSQL_ROWS CheckBooksBorrow(int id){
     // 逐行处理数据
     MYSQL_ROW row1 = mysql_fetch_row(res);
     if (row1) {
-        head = left = malloc(sizeof(MYSQL_ROWS));
+        head =malloc(sizeof(MYSQL_ROWS));
         if (head == NULL) {
             fprintf(stderr, "Memory allocation failed\n");
             mysql_free_result(res);
