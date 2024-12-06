@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <mysql.h>
 #include "../../Service/code/adminService.h"
 #include "../../Service/code/userLog.h"
 #include "../../Service/code/bookBorrowService.h"
-#include "../../Mapper/code/UserLogMapper.h"
 #include "../../Mapper/code/SQLPointer.h"
 
 
@@ -532,7 +530,7 @@ int main() {
         }
     }
 
-    mysql_close(conn); // 如果使用MySQL，请关闭连接
+    freeSQLResources();// 如果使用MySQL，请关闭连接
 
     return 0;
 }

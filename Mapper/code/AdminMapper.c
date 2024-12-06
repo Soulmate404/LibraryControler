@@ -9,24 +9,97 @@
 
 
 MYSQL_ROW SelectUser(int id){
-    char ID[50];
-    sprintf(ID, "%d", id);
+    MYSQL_BIND bind[4];
 
-    char sql[256];
-    strcpy(sql, "SELECT * FROM user WHERE id=");
-    strcat(sql, ID);
-    strcat(sql, ";");
 
-    if (mysql_query(conn, sql)) {
-        fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
+    const char *query = "SELECT * FROM user WHERE id = ?";
+
+
+
+
+
+    if (mysql_stmt_prepare(stmt, query, strlen(query))) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
         return NULL;
     }
-    static MYSQL_ROW mysqlRow=NULL;
-    mysqlRow=mysql_fetch_row(res);
-    mysql_free_result(res);
+
+
+    MYSQL_BIND param;
+    param.buffer_type = MYSQL_TYPE_LONG;
+    param.buffer = &id;
+    param.is_null = 0;
+    param.length = 0;
+
+
+    if (mysql_stmt_bind_param(stmt, &param)) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        return NULL;
+    }
+
+
+    if (mysql_stmt_execute(stmt)) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        return NULL;
+    }
+
+
+    int ID;
+    char name[10];
+    char password[20];
+    int privilege_level;
+
+    bind[0].buffer_type = MYSQL_TYPE_LONG;
+    bind[0].buffer = &ID;
+    bind[0].is_null = 0;
+    bind[0].length = 0;
+
+    bind[1].buffer_type = MYSQL_TYPE_STRING;
+    bind[1].buffer = name;
+    bind[1].buffer_length = sizeof(name);
+    bind[1].is_null = 0;
+    bind[1].length = 0;
+
+    bind[2].buffer_type = MYSQL_TYPE_STRING;
+    bind[2].buffer = password;
+    bind[2].buffer_length = sizeof(password);
+    bind[2].is_null = 0;
+    bind[2].length = 0;
+
+    bind[3].buffer_type = MYSQL_TYPE_LONG;
+    bind[3].buffer = &privilege_level;
+    bind[3].is_null = 0;
+    bind[3].length = 0;
+
+
+    if (mysql_stmt_bind_result(stmt, bind)) {
+        fprintf(stderr, "mysql_stmt_bind_result() failed: %s\n", mysql_error(conn));
+        return NULL;
+    }
+
+
+    static MYSQL_ROW mysqlRow= NULL;
+    mysqlRow=malloc(sizeof (char)*500);
+    if (mysql_stmt_fetch(stmt) == 0) {
+        char charID[50];
+        sprintf(charID,"%d",ID);
+        char charPrivilege[1];
+        sprintf(charPrivilege,"%d",privilege_level);
+        char *Name=name;
+        mysqlRow[0] = charID;
+        mysqlRow[1] = Name;
+        mysqlRow[2] = password;
+        mysqlRow[3] = charPrivilege;
+    } else {
+
+        mysqlRow = NULL;
+    }
+
+
+    mysql_stmt_free_result(stmt);
 
     return mysqlRow;
 }
+
 int AddBooks(int id,char* name,char* writer,int last_num,char* position){
     if (conn == NULL) {
         fprintf(stderr, "Database connection is not initialized.\n");

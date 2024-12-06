@@ -42,13 +42,21 @@ int deleteUser(int id) {
 }
 
 int selectUser(int id) {
-    MYSQL_ROW row = SelectUser(id);
-    if (row == NULL) {
+    MYSQL_ROW row1 = SelectUser(id);
+    char a[100];
+
+    if (row1 == NULL) {
         return -1;
     }else {
         for (int i = 0; i < 4; i ++) {
-            printf("%s\t",row[i]);
+            char* s=row1[i];
+            strcat(a,s);
+            strcat(a,"\t");
         }
+        printf("%s",a);//这里的打印如果直接printf就无法正常打印，但字符串拼接就没什么问题，天知道为什么
+        printf("\n");
+
+
         return 0;
     }
 }

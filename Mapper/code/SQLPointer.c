@@ -12,14 +12,20 @@ const char *database = "librarymanager";
 MYSQL *conn = NULL;
 MYSQL_RES *res = NULL;
 MYSQL_ROW row = NULL;
+MYSQL_STMT *stmt=NULL;
+
+
 void init(){
     conn = mysql_init(NULL);
 
 
 
-    if (mysql_real_connect(conn, server, user, password, database, 3306, NULL, 0)) {
+    if (mysql_real_connect(conn, server, user, password, database, 3306, NULL, 0)&& (stmt = mysql_stmt_init(conn))) {
         printf("success\n");
     }
+
+    //mysql_set_character_set(conn, "utf8mb4");
+
 }
 // 初始化全局变量
 
@@ -33,5 +39,9 @@ void freeSQLResources() {
     if (conn != NULL) {
         mysql_close(conn);
         conn = NULL;
+    }
+    if(stmt!=NULL){
+        mysql_stmt_close(stmt);
+        stmt=NULL;
     }
 }
