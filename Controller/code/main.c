@@ -25,8 +25,9 @@ void get_current_time(char *time_str) {
 void handle_user_menu(int user_type) {
     int flag;
     while (1) {
+        system("cls");
         if (user_type == 1) {
-            // 普通用户菜单
+            system("cls");// 普通用户菜单
             printf("欢迎来到图书管理系统(普通用户模式)\n");
             printf("修改密码请输入1\n");
             printf("通过ID码查找书籍请输入2\n");
@@ -41,6 +42,8 @@ void handle_user_menu(int user_type) {
                 case -1:
                     return;
                 case 1: {
+                    system("cls");
+                    printf("修改密码\n");
                     int user_id;
                     char old_password[100], new_password[100], confirm_password[100];
                     printf("请输入你的id：");
@@ -69,9 +72,12 @@ void handle_user_menu(int user_type) {
                     } else {
                         printf("密码修改失败。\n");
                     }
+                    printf("按回车键以继续");
+                    getchar();
                     break;
                 }
                 case 2: {
+
                     int book_ID;
                     printf("请输入图书的ID码：");
                     scanf("%d", &book_ID);
@@ -82,11 +88,12 @@ void handle_user_menu(int user_type) {
                     } else {
                         int result = selectByID(book_ID);
                         if (result ==0) {
-                            printf("找到书籍信息：\n");
-                            // 假设第一列为书名，第二列为作者，第三列为位置...
+                            printf("找到书籍信息\n");
 
                         }
                     }
+                    printf("按回车键以继续");
+                    getchar();
                     break;
                 }
                 case 3: {
@@ -99,6 +106,9 @@ void handle_user_menu(int user_type) {
                     if (rows!=0) {
                         printf("没有找到对应名称的书籍。\n");
                     }
+                    printf("按回车键以继续");
+                    getchar();
+                    break;
                 }
                 case 4: {
                     int user_id, book_id;
@@ -123,6 +133,8 @@ void handle_user_menu(int user_type) {
                     } else {
                         printf("借书失败。\n");
                     }
+                    printf("按回车键以继续");
+                    getchar();
                     break;
                 }
                 case 5: {
@@ -138,7 +150,8 @@ void handle_user_menu(int user_type) {
                         printf("还书成功。\n");
                     } else {
                         printf("还书失败。\n");
-                    }
+                    } printf("按回车键以继续");
+                    getchar();
                     break;
                 }
                 default:
@@ -150,8 +163,10 @@ void handle_user_menu(int user_type) {
 
 // 处理管理员菜单
 void handle_admin_menu() {
+
     int flag;
     while (1) {
+        system("cls");
         printf("欢迎来到图书管理系统（管理员模式）\n");
         printf("修改密码请输入1\n");
         printf("通过ID码查找书籍请输入2\n");
@@ -199,7 +214,8 @@ void handle_admin_menu() {
                     printf("密码修改成功。\n");
                 } else {
                     printf("密码修改失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 2: {
@@ -207,17 +223,19 @@ void handle_admin_menu() {
                 printf("请输入图书的ID码：");
                 scanf("%d", &book_ID);
                 getchar(); // 清除缓冲区中的换行符
+                int result = selectByID(book_ID);
 
-                if (selectByID(book_ID) == -1) {
+                if (result == -1) {
                     printf("该ID对应的书不存在。\n");
                 } else {
-                    int result = selectByID(book_ID);
+
                     if (result ==0) {
                         printf("找到书籍信息：\n");
 
 
                     }
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 3: {
@@ -232,7 +250,8 @@ void handle_admin_menu() {
 
                 } else {
                     printf("没有找到该书。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
 
@@ -262,7 +281,8 @@ void handle_admin_menu() {
                     printf("借书登记成功。\n");
                 } else {
                     printf("借书登记失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
 
@@ -280,7 +300,8 @@ void handle_admin_menu() {
                     printf("还书登记成功。\n");
                 } else {
                     printf("还书登记失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 6: {
@@ -293,7 +314,8 @@ void handle_admin_menu() {
                     printf("书籍存在。\n");
                 } else {
                     printf("书籍不存在。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 7: {
@@ -307,7 +329,8 @@ void handle_admin_menu() {
 
                 } else {
                     printf("用户不存在。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 8: {
@@ -320,7 +343,8 @@ void handle_admin_menu() {
                     printf("用户存在。\n");
                 } else {
                     printf("用户不存在。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 9: {
@@ -350,7 +374,8 @@ void handle_admin_menu() {
                     printf("书籍添加成功。\n");
                 } else {
                     printf("书籍添加失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 10: {
@@ -377,6 +402,8 @@ void handle_admin_menu() {
                 } else {
                     printf("用户添加失败。\n");
                 }
+                printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 11: {
@@ -389,7 +416,8 @@ void handle_admin_menu() {
                     printf("书籍删除成功。\n");
                 } else {
                     printf("书籍删除失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 12: {
@@ -402,7 +430,8 @@ void handle_admin_menu() {
                     printf("用户删除成功。\n");
                 } else {
                     printf("用户删除失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 13: {
@@ -419,7 +448,8 @@ void handle_admin_menu() {
                     printf("权限等级修改成功。\n");
                 } else {
                     printf("权限等级修改失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 14: {
@@ -433,7 +463,8 @@ void handle_admin_menu() {
 
                 } else {
                     printf("用户没有借阅记录。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 15: {
@@ -442,7 +473,8 @@ void handle_admin_menu() {
 
                 } else {
                     printf("没有借阅记录。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 16: {
@@ -456,7 +488,8 @@ void handle_admin_menu() {
 
                 } else {
                     printf("书籍没有借阅记录。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             case 17: {
@@ -478,7 +511,8 @@ void handle_admin_menu() {
                     printf("密码重置成功。\n");
                 } else {
                     printf("密码重置失败。\n");
-                }
+                } printf("按回车键以继续");
+                getchar();
                 break;
             }
             default:
@@ -490,6 +524,7 @@ void handle_admin_menu() {
 int main() {
     // MYSQL *conn; // 如果使用MySQL，请取消注释并初始化连接
 
+    system("color F0");
     freeSQLResources();
     init();
     welcome_page();
@@ -529,8 +564,5 @@ int main() {
             }
         }
     }
-
-    freeSQLResources();// 如果使用MySQL，请关闭连接
-
     return 0;
 }

@@ -64,30 +64,29 @@ MYSQL_ROW SelectByID(int id) {
     strcat(sql, ID);
     strcat(sql, ";");
 
-    // 执行查询
+
     if (mysql_real_query(conn, sql, strlen(sql))) {
         fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
         return NULL;
     }
 
-    // 获取查询结果
     res = mysql_store_result(conn);
     if (res == NULL) {
         fprintf(stderr, "mysql_store_result() failed. Error: %s\n", mysql_error(conn));
         return NULL;
     }
 
-    // 确保至少有一行数据
+
     MYSQL_ROW mysqlRow = mysql_fetch_row(res);
     if (mysqlRow == NULL) {
         mysql_free_result(res);  // 不要忘记释放资源
         return NULL;
     }
 
-    // 获取结果集中的字段数量
+
     size_t num_fields = mysql_num_fields(res);
 
-    // 复制结果到动态分配的内存
+
     MYSQL_ROW result = malloc(sizeof(char*) * num_fields);
     if (result == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
@@ -95,7 +94,7 @@ MYSQL_ROW SelectByID(int id) {
         return NULL;
     }
 
-    // 逐个复制每个字段的内容
+
     for (size_t i = 0; i < num_fields; ++i) {
         if (mysqlRow[i]) {
             result[i] = strdup(mysqlRow[i]);
@@ -104,7 +103,7 @@ MYSQL_ROW SelectByID(int id) {
         }
     }
 
-    mysql_free_result(res);  // 确保释放结果集
+    mysql_free_result(res);
 
     return result;
 }
@@ -137,14 +136,13 @@ MYSQL_RES * SelectByName(char *name) {
 
 
     if (mysql_num_rows(res) == 0) {
-        printf("No rows found for name: %s\n", name);
         mysql_free_result(res);  // 释放结果集
         MYSQL_RES *d;
         d->data=NULL;
         return  d;
     }
 
-    return res;  // 返回查询结果集
+    return res;
 }
 int AddBorrow(int userid, char* name, int bookid, char* time) {
     if (conn == NULL) {

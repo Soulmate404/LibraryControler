@@ -7,10 +7,13 @@
 #include "../../Mapper/code/BookBorrowMapper.h"
 
 int selectByID(int id) {
+    printf("Entering selectByID with id: %d\n", id);  // 调试信息
+
     MYSQL_ROW row = SelectByID(id);
     char a[500];
 
     if (row == NULL) {
+        printf("Exiting selectByID: row is NULL\n");  // 调试信息
         return -1;
     }
 
@@ -29,13 +32,13 @@ int selectByID(int id) {
             }
         }
     }
-    char s[500];
-    strcpy(s,a);
 
-    printf("%s\n", s);
+    printf("%s\n", a);
 
+    printf("Exiting selectByID successfully\n");  // 调试信息
     return 0;
 }
+
 
 int selectByName(char* name) {
     char *found = strchr(name, ';');
@@ -43,7 +46,8 @@ int selectByName(char* name) {
         return -1;
     }
     MYSQL_RES *mysqlRes= SelectByName(name);
-    if(mysql_num_rows(mysqlRes) == 0){
+    if(mysql_num_rows(mysqlRes) == 0|| mysql_num_rows(mysqlRes)>100){
+        mysql_free_result(mysqlRes);
         return -1;
     }
     MYSQL_ROW row;
@@ -54,6 +58,7 @@ int selectByName(char* name) {
         }
         printf("\n");
     }
+    mysql_free_result(mysqlRes);
     return 0;
 }
 int addBorrow(int userid,char* name,int bookid,char* time) {

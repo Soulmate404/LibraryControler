@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include "SQLPointer.h"
-const char *server = "192.168.5.21";
+const char *server = "localhost";
 const char *user = "root";
 const char *password = "guo12345";
 const char *database = "librarymanager";
@@ -21,7 +21,7 @@ void init(){
 
 
     if (mysql_real_connect(conn, server, user, password, database, 3306, NULL, 0)&& (stmt = mysql_stmt_init(conn))) {
-        printf("success\n");
+        printf("Ssuccess\n");
     }
 
     //mysql_set_character_set(conn, "utf8mb4");
