@@ -4,10 +4,10 @@
 
 #include <stdio.h>
 #include "SQLPointer.h"
-const char *server = "localhost";
-const char *user = "root";
+const char *server = "8.137.13.231";
+const char *user = "guo";
 const char *password = "guo12345";
-const char *database = "librarymanager";
+const char *database = "library";
 
 MYSQL *conn = NULL;
 MYSQL_RES *res = NULL;
@@ -20,8 +20,10 @@ void init(){
 
 
 
-    if (mysql_real_connect(conn, server, user, password, database, 3306, NULL, 0)&& (stmt = mysql_stmt_init(conn))) {
+    if (mysql_real_connect(conn, server, user, password, database, 6848, NULL, 0)&& (stmt = mysql_stmt_init(conn))) {
         printf("Ssuccess\n");
+    }else{
+        printf("failed");
     }
 
     //mysql_set_character_set(conn, "utf8mb4");
