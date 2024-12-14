@@ -30,3 +30,10 @@ add_executable(LibraryController Controller/code/login.c
         Controller/code/user_window.h
 )
 target_link_libraries(LibraryController libmysql)
+
+# 设置为 Windows 子系统
+
+
+if(MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mwindows")
+endif()

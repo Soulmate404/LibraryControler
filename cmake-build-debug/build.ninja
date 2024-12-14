@@ -129,6 +129,7 @@ build CMakeFiles/LibraryController.dir/Controller/code/admin_window.c.obj: C_COM
 
 build LibraryController.exe: C_EXECUTABLE_LINKER__LibraryController_Debug CMakeFiles/LibraryController.dir/Controller/code/login.c.obj CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj CMakeFiles/LibraryController.dir/Mapper/code/BookBorrowMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/adminService.c.obj CMakeFiles/LibraryController.dir/Mapper/code/UserLogMapper.c.obj CMakeFiles/LibraryController.dir/Service/code/bookBorrowService.c.obj CMakeFiles/LibraryController.dir/Service/code/userLog.c.obj CMakeFiles/LibraryController.dir/Mapper/code/SQLPointer.c.obj CMakeFiles/LibraryController.dir/Controller/code/user_window.c.obj CMakeFiles/LibraryController.dir/Controller/code/admin_window.c.obj
   FLAGS = -g
+  LINK_FLAGS = -mwindows
   LINK_LIBRARIES = -llibmysql  -llibmysql  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/PROGRA~1/MySQL/MYSQLS~1.0/lib
   OBJECT_DIR = CMakeFiles\LibraryController.dir

@@ -31,7 +31,7 @@ void init(){
 
 
     if (mysql_real_connect(conn, server, user, password, database, 6848, NULL, 0)&& (stmt = mysql_stmt_init(conn))) {
-        printf("Ssuccess\n");
+
     }else{
         printf("failed");
     }
