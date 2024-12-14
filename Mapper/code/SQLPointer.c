@@ -17,6 +17,16 @@ MYSQL_STMT *stmt=NULL;
 
 void init(){
     conn = mysql_init(NULL);
+    if (conn == NULL) {
+        fprintf(stderr, "mysql_init() failed\n");
+        return;
+    }
+
+    // 设置字符集为 utf8
+    mysql_options(conn, MYSQL_SET_CHARSET_NAME, "utf8");
+    mysql_options(conn, MYSQL_INIT_COMMAND, "SET NAMES utf8");
+
+
 
 
 

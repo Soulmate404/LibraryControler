@@ -146,57 +146,94 @@ MYSQL_RES * SelectByName(char *name) {
 }
 int AddBorrow(int userid, char* name, int bookid, char* time) {
     if (conn == NULL) {
+        fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
 
+    const char* query = "INSERT INTO borrow (user_id, book_id, borrow_time, status) VALUES (?, ?, ?, '借出')";
 
-    const char *sql = "INSERT INTO borrow (user_id, name, book_id, borrow_time) VALUES (?, ?, ?, ?)";
-    if (mysql_stmt_prepare(stmt, sql, strlen(sql))) {
-        mysql_stmt_free_result(stmt);
+    stmt = mysql_stmt_init(conn);
+    if (stmt == NULL) {
+        fprintf(stderr, "mysql_stmt_init() failed\n");
         return -1;
     }
 
-    MYSQL_BIND bind[4];
+    if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
 
+    // 初始化绑定结构体
+    MYSQL_BIND bind[3];
+    memset(bind, 0, sizeof(bind));
+
+    // 设置时间字符串长度
+    unsigned long time_length = strlen(time);
+
+    // 绑定用户ID
     bind[0].buffer_type = MYSQL_TYPE_LONG;
     bind[0].buffer = &userid;
     bind[0].is_null = 0;
     bind[0].length = 0;
 
-    bind[1].buffer_type = MYSQL_TYPE_STRING;
-    bind[1].buffer = name ? name : "NULL";
-    bind[1].buffer_length = name ? strlen(name) : 4;
+    // 绑定图书ID
+    bind[1].buffer_type = MYSQL_TYPE_LONG;
+    bind[1].buffer = &bookid;
     bind[1].is_null = 0;
-    bind[1].length = NULL;
+    bind[1].length = 0;
 
-    bind[2].buffer_type = MYSQL_TYPE_LONG;
-    bind[2].buffer = &bookid;
+    // 绑定借阅时间
+    bind[2].buffer_type = MYSQL_TYPE_STRING;
+    bind[2].buffer = time;
+    bind[2].buffer_length = time_length;
+    bind[2].length = &time_length;
     bind[2].is_null = 0;
-    bind[2].length = 0;
 
-    bind[3].buffer_type = MYSQL_TYPE_STRING;
-    bind[3].buffer = time ? time : "NULL";
-    bind[3].buffer_length = time ? strlen(time) : 4;
-    bind[3].is_null =0;
-    bind[3].length = NULL;
+    if (mysql_stmt_bind_param(stmt, bind) != 0) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
 
-    if (mysql_stmt_bind_param(stmt, bind)) {
-        mysql_stmt_free_result(stmt);
+    if (mysql_stmt_execute(stmt) != 0) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+    // 更新图书剩余数量
+    const char* update_query = "UPDATE book SET remaining_quantity = remaining_quantity - 1 WHERE id = ?";
+    
+    stmt = mysql_stmt_init(conn);
+    if (mysql_stmt_prepare(stmt, update_query, strlen(update_query))) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+    MYSQL_BIND update_bind[1];
+    memset(update_bind, 0, sizeof(update_bind));
+
+    update_bind[0].buffer_type = MYSQL_TYPE_LONG;
+    update_bind[0].buffer = &bookid;
+    update_bind[0].is_null = 0;
+    update_bind[0].length = 0;
+
+    if (mysql_stmt_bind_param(stmt, update_bind)) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
         return -1;
     }
 
     if (mysql_stmt_execute(stmt)) {
-        mysql_stmt_free_result(stmt);
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
         return -1;
     }
 
-    if (mysql_stmt_affected_rows(stmt) > 0) {
-        mysql_stmt_free_result(stmt);
-        return 0;
-    } else {
-        mysql_stmt_free_result(stmt);
-        return -1;
-    }
+    mysql_stmt_close(stmt);
+    return 0;
 }
 int DeleteBorrow(int userid,int bookid){
     char uID[50];

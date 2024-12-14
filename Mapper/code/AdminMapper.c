@@ -185,74 +185,82 @@ int AddBooks(int id, char* name, char* writer, int last_num,  char* position) {
         return -1;
     }
 }
-int AddUser( int id,  char* name, char* pass_wd, int authority) {
+int AddUser(int id, char* name, char* pass_wd, int authority) {
     if (conn == NULL) {
         fprintf(stderr, "Database connection is not initialized.\n");
         return -1;
     }
 
-
     const char* query = "INSERT INTO user (id, name, pass_wd, authority) VALUES (?, ?, ?, ?)";
 
-
+    // 初始化 statement
     stmt = mysql_stmt_init(conn);
     if (stmt == NULL) {
         fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
 
-
+    // 准备语句
     if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
         fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
         mysql_stmt_close(stmt);
         return -1;
     }
 
-
+    // 初始化绑定结构体
     MYSQL_BIND bind[4];
+    memset(bind, 0, sizeof(bind));
 
+    // 设置参数长度
+    unsigned long name_length = strlen(name);
+    unsigned long pass_length = strlen(pass_wd);
 
+    // 绑定 id
     bind[0].buffer_type = MYSQL_TYPE_LONG;
-    bind[0].buffer = (char*)&id;
+    bind[0].buffer = &id;
     bind[0].is_null = 0;
+    bind[0].length = 0;
 
-
+    // 绑定 name
     bind[1].buffer_type = MYSQL_TYPE_STRING;
-    bind[1].buffer = (char*)name;
-    bind[1].buffer_length = (name != NULL) ? strlen(name) : 0;
-    bind[1].is_null =0;
+    bind[1].buffer = name;
+    bind[1].buffer_length = name_length;
+    bind[1].length = &name_length;
+    bind[1].is_null = 0;
 
-
+    // 绑定 password
     bind[2].buffer_type = MYSQL_TYPE_STRING;
-    bind[2].buffer = (char*)pass_wd;
-    bind[2].buffer_length = (pass_wd != NULL) ? strlen(pass_wd) : 0;
+    bind[2].buffer = pass_wd;
+    bind[2].buffer_length = pass_length;
+    bind[2].length = &pass_length;
     bind[2].is_null = 0;
 
-
+    // 绑定 authority
     bind[3].buffer_type = MYSQL_TYPE_LONG;
-    bind[3].buffer = (char*)&authority;
+    bind[3].buffer = &authority;
     bind[3].is_null = 0;
+    bind[3].length = 0;
 
-
+    // 绑定参数
     if (mysql_stmt_bind_param(stmt, bind) != 0) {
         fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
 
-
+    // 执行语句
     if (mysql_stmt_execute(stmt) != 0) {
         fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
 
-
+    // 检查影响的行数
     if (mysql_stmt_affected_rows(stmt) > 0) {
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return 0;  // 插入成功
     } else {
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;  // 插入失败
     }
 }
@@ -538,11 +546,14 @@ MYSQL_ROWS CheckBooksBorrow(int id){
     return *head;
 
 }
-int RootResetPass( int id, char *pass) {
-    if(pass==NULL){
+int RootResetPass(int id, char *pass) {
+    if (pass == NULL) {
         return -1;
     }
-    const char *sql = "UPDATE user SET pass_wd = '?' WHERE id = ?";
+
+    // 修正 SQL 语句，移除多余的引号
+    const char *sql = "UPDATE user SET pass_wd = ? WHERE id = ?";
+    
     stmt = mysql_stmt_init(conn);
     if (!stmt) {
         fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
@@ -551,36 +562,47 @@ int RootResetPass( int id, char *pass) {
 
     if (mysql_stmt_prepare(stmt, sql, strlen(sql))) {
         fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
-    char ID[50];
-    sprintf(ID,"%d",id);
 
+    // 初始化绑定结构体
     MYSQL_BIND bind[2];
+    memset(bind, 0, sizeof(bind));
+
+    // 设置密码长度
+    unsigned long pass_length = strlen(pass);
+
+    // 绑定密码参数
     bind[0].buffer_type = MYSQL_TYPE_STRING;
-    bind[0].buffer = (char *)pass;
-    bind[0].buffer_length = strlen(pass);
+    bind[0].buffer = pass;
+    bind[0].buffer_length = pass_length;
+    bind[0].length = &pass_length;
+    bind[0].is_null = 0;
+
+    // 绑定 ID 参数
     bind[1].buffer_type = MYSQL_TYPE_LONG;
-    bind[1].buffer = (char *)ID;
+    bind[1].buffer = &id;
+    bind[1].is_null = 0;
+    bind[1].length = 0;
 
     if (mysql_stmt_bind_param(stmt, bind)) {
         fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
 
     if (mysql_stmt_execute(stmt)) {
         fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
 
     if (mysql_stmt_affected_rows(stmt) > 0) {
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return 0;
     } else {
-        mysql_stmt_free_result(stmt);
+        mysql_stmt_close(stmt);
         return -1;
     }
 }

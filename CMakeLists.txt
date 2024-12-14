@@ -9,7 +9,7 @@ link_directories(C:\\Program\ Files\\MySQL\\MySQL\ Server\ 9.0\\lib)
 link_libraries(libmysql)
 
 
-add_executable(LibraryController Controller/code/main.c
+add_executable(LibraryController Controller/code/login.c
         Mapper/code/AdminMapper.c
         Mapper/code/AdminMapper.h
         Mapper/code/BookBorrowMapper.c
@@ -24,5 +24,9 @@ add_executable(LibraryController Controller/code/main.c
         Service/code/userLog.h
         Mapper/code/SQLPointer.c
         Mapper/code/SQLPointer.h
+        Controller/code/user_window.c
+        Controller/code/admin_window.c
+        Controller/code/admin_window.h
+        Controller/code/user_window.h
 )
 target_link_libraries(LibraryController libmysql)
