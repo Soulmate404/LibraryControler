@@ -42,3 +42,8 @@
 19	925	7559308147309018	CMakeFiles/LibraryController.dir/Service/code/adminService.c.obj	c9d532b22fb2dc70
 9	967	7559308147216810	CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj	9c0c3ac4b1ff1fe
 967	1154	7559308156797481	LibraryController.exe	628a7601452097a6
+50	964	7559388268195852	CMakeFiles/LibraryController.dir/Controller/code/user_window.c.obj	a9b14190d2a80566
+19	969	7559388267883560	CMakeFiles/LibraryController.dir/Controller/code/login.c.obj	33019872e216bac4
+35	979	7559388268046058	CMakeFiles/LibraryController.dir/Mapper/code/AdminMapper.c.obj	9c0c3ac4b1ff1fe
+64	979	7559388268336784	CMakeFiles/LibraryController.dir/Controller/code/admin_window.c.obj	485694365d85ad86
+980	1176	7559388277495973	LibraryController.exe	628a7601452097a6
