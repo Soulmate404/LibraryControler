@@ -7,6 +7,7 @@
 #include <string.h>
 #include "../../Mapper/code/AdminMapper.h"
 #include "../../Mapper/code/BookBorrowMapper.h"
+#include "../../Mapper/code/SQLPointer.h"
 
 
 int addBooks(int id,char* name,char* writer,int last_num,char* position) {
@@ -143,6 +144,7 @@ int checkBooksBorrow(int id, char* result) {
         strcat(result, "\r\n");
         rows = rows->next;
     }
+
     return 0;
 }
 

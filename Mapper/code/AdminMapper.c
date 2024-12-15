@@ -510,10 +510,11 @@ MYSQL_ROWS CheckBooksBorrow(int id){
     if (mysql_query(conn, sql)) {
         fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
         MYSQL_ROWS s;
-        s.data=NULL;
-        s.next=NULL;
-        return  s;
+        s.data = NULL;
+        s.next = NULL;
+        return s;
     }
+
     MYSQL_ROWS *head = NULL;
     MYSQL_ROWS *left = NULL;
     MYSQL_ROWS *right = NULL;
@@ -526,25 +527,37 @@ MYSQL_ROWS CheckBooksBorrow(int id){
             fprintf(stderr, "Memory allocation error\n");
             break;
         }
-        right->data = row1;
+        
+        // 为行数据分配内存并复制数据
+        right->data = malloc(4 * sizeof(char *));
+        for(int i = 0; i < 4; i++) {
+            if(row1[i]) {
+                right->data[i] = strdup(row1[i]);
+            } else {
+                right->data[i] = NULL;
+            }
+        }
+        
         right->next = NULL;
 
         if (head == NULL) {
             head = left = right;
         } else {
-            left->next = right;
+            left->next = right;  // 修正链表连接
             left = right;
         }
     }
+
+    mysql_free_result(res);
+
     if (head == NULL) {
         MYSQL_ROWS s;
         s.data = NULL;
         s.next = NULL;
         return s;
     }
-    mysql_free_result(res);
-    return *head;
 
+    return *head;
 }
 int RootResetPass(int id, char *pass) {
     if (pass == NULL) {

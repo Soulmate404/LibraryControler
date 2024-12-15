@@ -36,7 +36,7 @@ void init(){
         printf("failed");
     }
 
-    //mysql_set_character_set(conn, "utf8mb4");
+
 
 }
 // 初始化全局变量
