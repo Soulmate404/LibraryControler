@@ -84,7 +84,7 @@ HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
     hReturnBtn = CreateWindow("BUTTON", "还书", WS_VISIBLE | WS_CHILD,
                               320, 60, 80, 25, hwnd, (HMENU)3, hInstance, NULL);
 
-    // 结果显示区域
+    // 创建字体，用于避免显示区域的乱码
     HFONT hFont = CreateFont(
         16, 0,                    // 高度16, 宽度自动
         0, 0,                     // 文本倾斜和旋转角度

@@ -16,7 +16,7 @@ HWND hUsername, hPassword, hLogin, hSignup;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     freeSQLResources();
-    init();// 注册窗口类
+    init();
     const char CLASS_NAME[] = "Login Window Class";
 
     WNDCLASS wc = {0};
@@ -82,13 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             hwnd, (HMENU)1, hInstance, NULL
     );
 
-    // 创建注册按钮
-    hSignup = CreateWindow(
-        "BUTTON", "注册",
-        WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        50, 200, 280, 35,
-        hwnd, (HMENU)2, hInstance, NULL
-    );
+
 
     // 显示窗口
     ShowWindow(hwnd, nCmdShow);
@@ -102,6 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     return 0;
 }
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
@@ -146,8 +141,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
                         }
                         break;
                 }
-            } else if (LOWORD(wParam) == 2) { // 注册按钮被点击
-                // TODO: 实现注册功能或打开注册窗口
             }
             return 0;
         }
@@ -161,3 +154,4 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
     }
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
+#pragma clang diagnostic pop

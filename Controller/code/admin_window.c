@@ -271,7 +271,7 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                                 MessageBox(hwnd, "用户ID错误！", "错误", MB_OK | MB_ICONERROR);
                                 break;
                             case 2:
-                                MessageBox(hwnd, "权限值错误！", "��误", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "权限值错误！", "错误", MB_OK | MB_ICONERROR);
                                 break;
                         }
                     }
