@@ -13,20 +13,20 @@ int selectByID(int id, char* result) {
         return -1;
     }
 
-    // æ¸…ç©ºç»“æœå­—ç¬¦ä¸²
+    // Çå¿Õ½á¹û×Ö·û´®
     result[0] = '\0';
     
-    // æ·»åŠ è¡¨å¤´ï¼Œä½¿ç”¨ç©ºæ ¼ä»£æ›¿åˆ¶è¡¨ç¬¦ä»¥è·å¾—æ›´å¥½çš„å¯¹é½æ•ˆæœ
-    strcat(result, "å›¾ä¹¦ID    ä¹¦å                ä½œè€…                å‰©ä½™æ•°é‡    ä½ç½®\r\n");
+    // Ìí¼Ó±íÍ·£¬Ê¹ÓÃ¿Õ¸ñ´úÌæÖÆ±í·ûÒÔ»ñµÃ¸üºÃµÄ¶ÔÆëĞ§¹û
+    strcat(result, "Í¼ÊéID    ÊéÃû                ×÷Õß                Ê£ÓàÊıÁ¿    Î»ÖÃ\r\n");
     strcat(result, "----------------------------------------------------------------\r\n");
     
-    // æ‹¼æ¥ç»“æœï¼Œç¡®ä¿æ¯åˆ—æœ‰å›ºå®šå®½åº¦
+    // Æ´½Ó½á¹û£¬È·±£Ã¿ÁĞÓĞ¹Ì¶¨¿í¶È
     char temp[100];
-    sprintf(temp, "%-10s", row[0]); strcat(result, temp);  // ID åˆ—å®½ 10
-    sprintf(temp, "%-20s", row[1]); strcat(result, temp);  // ä¹¦ååˆ—å®½ 20
-    sprintf(temp, "%-20s", row[2]); strcat(result, temp);  // ä½œè€…åˆ—å®½ 20
-    sprintf(temp, "%-12s", row[3]); strcat(result, temp);  // å‰©ä½™æ•°é‡åˆ—å®½ 12
-    sprintf(temp, "%s", row[4]); strcat(result, temp);     // ä½ç½®
+    sprintf(temp, "%-10s", row[0]); strcat(result, temp);  // ID ÁĞ¿í 10
+    sprintf(temp, "%-20s", row[1]); strcat(result, temp);  // ÊéÃûÁĞ¿í 20
+    sprintf(temp, "%-20s", row[2]); strcat(result, temp);  // ×÷ÕßÁĞ¿í 20
+    sprintf(temp, "%-12s", row[3]); strcat(result, temp);  // Ê£ÓàÊıÁ¿ÁĞ¿í 12
+    sprintf(temp, "%s", row[4]); strcat(result, temp);     // Î»ÖÃ
     strcat(result, "\r\n");
     
     return 0;
@@ -44,11 +44,11 @@ int selectByName(char* name, char* result) {
         return -1;
     }
     
-    // æ¸…ç©ºç»“æœå­—ç¬¦ä¸²
+    // Çå¿Õ½á¹û×Ö·û´®
     result[0] = '\0';
     
-    // æ·»åŠ è¡¨å¤´
-    strcat(result, "å›¾ä¹¦ID    ä¹¦å                ä½œè€…                å‰©ä½™æ•°é‡    ä½ç½®\r\n");
+    // Ìí¼Ó±íÍ·
+    strcat(result, "Í¼ÊéID    ÊéÃû                ×÷Õß                Ê£ÓàÊıÁ¿    Î»ÖÃ\r\n");
     strcat(result, "----------------------------------------------------------------\r\n");
     
     MYSQL_ROW row;
@@ -68,23 +68,23 @@ int selectByName(char* name, char* result) {
 }
 
 int addBorrow(int userid, char* name, int bookid, char* time) {
-    // é¦–å…ˆæ£€æŸ¥å›¾ä¹¦æ˜¯å¦å­˜åœ¨
+    // Ê×ÏÈ¼ì²éÍ¼ÊéÊÇ·ñ´æÔÚ
     if (CheckBook(bookid) != 0) {
-        return 1;  // å›¾ä¹¦ä¸å­˜åœ¨
+        return 1;  // Í¼Êé²»´æÔÚ
     }
     
-    // æ£€æŸ¥å›¾ä¹¦æ˜¯å¦æœ‰å‰©ä½™
+    // ¼ì²éÍ¼ÊéÊÇ·ñÓĞÊ£Óà
     int remaining = GetBookNum(bookid);
     if (remaining <= 0) {
-        return 2;  // å›¾ä¹¦å·²è¢«å€Ÿå®Œ
+        return 2;  // Í¼ÊéÒÑ±»½èÍê
     }
     
-    // æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å·²ç»å€Ÿé˜…è¿‡è¿™æœ¬ä¹¦
+    // ¼ì²éÓÃ»§ÊÇ·ñÒÑ¾­½èÔÄ¹ıÕâ±¾Êé
     if (CheckBorrow(userid, bookid) == 0) {
-        return 3;  // ç”¨æˆ·å·²ç»å€Ÿé˜…è¿‡è¿™æœ¬ä¹¦
+        return 3;  // ÓÃ»§ÒÑ¾­½èÔÄ¹ıÕâ±¾Êé
     }
     
-    // æ‰§è¡Œå€Ÿä¹¦æ“ä½œ
+    // Ö´ĞĞ½èÊé²Ù×÷
     return AddBorrow(userid, name, bookid, time);
 }
 

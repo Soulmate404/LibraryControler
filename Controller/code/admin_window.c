@@ -6,7 +6,7 @@
 #include "../../Mapper/code/AdminMapper.h"
 #include "admin_window.h"
 
-// å…¨å±€å˜é‡å£°æ˜
+// È«¾Ö±äÁ¿ÉùÃ÷
 static HWND hBookId, hBookName, hWriter, hLastNum, hPosition;
 static HWND hAddBookBtn, hDelBookBtn;
 static HWND hAdminUserId, hAdminUserName, hAdminPassword, hAuthority;
@@ -15,7 +15,7 @@ static HWND hCheckUserBtn, hCheckBookBtn;
 static HWND hResetPassId, hNewPass1, hNewPass2, hResetPassBtn;
 static HWND hAdminResultText;
 
-// å‡½æ•°å®ç°
+// º¯ÊıÊµÏÖ
 HWND CreateAdminWindow(HINSTANCE hInstance) {
     const char CLASS_NAME[] = "Admin Window Class";
 
@@ -28,7 +28,7 @@ HWND CreateAdminWindow(HINSTANCE hInstance) {
 
     RegisterClass(&wc);
 
-    // åˆ›å»ºçª—å£ï¼ˆå±…ä¸­æ˜¾ç¤ºï¼‰
+    // ´´½¨´°¿Ú£¨¾ÓÖĞÏÔÊ¾£©
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
     int windowWidth = 1000;
@@ -39,7 +39,7 @@ HWND CreateAdminWindow(HINSTANCE hInstance) {
     HWND hwnd = CreateWindowEx(
             0,
             CLASS_NAME,
-            "å›¾ä¹¦ç®¡ç†ç³»ç»Ÿ - ç®¡ç†å‘˜ç•Œé¢",
+            "Í¼Êé¹ÜÀíÏµÍ³ - ¹ÜÀíÔ±½çÃæ",
             WS_OVERLAPPEDWINDOW,
             posX, posY, windowWidth, windowHeight,
             NULL, NULL, hInstance, NULL
@@ -47,98 +47,98 @@ HWND CreateAdminWindow(HINSTANCE hInstance) {
 
     if (hwnd == NULL) return NULL;
 
-    // å›¾ä¹¦ç®¡ç†éƒ¨åˆ†
-    CreateWindow("STATIC", "å›¾ä¹¦ç®¡ç†", WS_VISIBLE | WS_CHILD,
+    // Í¼Êé¹ÜÀí²¿·Ö
+    CreateWindow("STATIC", "Í¼Êé¹ÜÀí", WS_VISIBLE | WS_CHILD,
                  20, 20, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "å›¾ä¹¦ID:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "Í¼ÊéID:", WS_VISIBLE | WS_CHILD,
                  20, 50, 60, 25, hwnd, NULL, hInstance, NULL);
     hBookId = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                            90, 50, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ä¹¦å:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÊéÃû:", WS_VISIBLE | WS_CHILD,
                  200, 50, 40, 25, hwnd, NULL, hInstance, NULL);
     hBookName = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                              250, 50, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ä½œè€…:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "×÷Õß:", WS_VISIBLE | WS_CHILD,
                  410, 50, 40, 25, hwnd, NULL, hInstance, NULL);
     hWriter = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                            460, 50, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "æ•°é‡:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÊıÁ¿:", WS_VISIBLE | WS_CHILD,
                  620, 50, 40, 25, hwnd, NULL, hInstance, NULL);
     hLastNum = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                             670, 50, 60, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ä½ç½®:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "Î»ÖÃ:", WS_VISIBLE | WS_CHILD,
                  740, 50, 40, 25, hwnd, NULL, hInstance, NULL);
     hPosition = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                              790, 50, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    hAddBookBtn = CreateWindow("BUTTON", "æ·»åŠ å›¾ä¹¦", WS_VISIBLE | WS_CHILD,
+    hAddBookBtn = CreateWindow("BUTTON", "Ìí¼ÓÍ¼Êé", WS_VISIBLE | WS_CHILD,
                                20, 90, 100, 30, hwnd, (HMENU)1, hInstance, NULL);
-    hDelBookBtn = CreateWindow("BUTTON", "åˆ é™¤å›¾ä¹¦", WS_VISIBLE | WS_CHILD,
+    hDelBookBtn = CreateWindow("BUTTON", "É¾³ıÍ¼Êé", WS_VISIBLE | WS_CHILD,
                                130, 90, 100, 30, hwnd, (HMENU)2, hInstance, NULL);
-    hCheckBookBtn = CreateWindow("BUTTON", "æŸ¥çœ‹å€Ÿé˜…æƒ…å†µ", WS_VISIBLE | WS_CHILD,
+    hCheckBookBtn = CreateWindow("BUTTON", "²é¿´½èÔÄÇé¿ö", WS_VISIBLE | WS_CHILD,
                                  240, 90, 100, 30, hwnd, (HMENU)3, hInstance, NULL);
 
-    // ç”¨æˆ·ç®¡ç†éƒ¨åˆ†
-    CreateWindow("STATIC", "ç”¨æˆ·ç®¡ç†", WS_VISIBLE | WS_CHILD,
+    // ÓÃ»§¹ÜÀí²¿·Ö
+    CreateWindow("STATIC", "ÓÃ»§¹ÜÀí", WS_VISIBLE | WS_CHILD,
                  20, 140, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ç”¨æˆ·ID:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÓÃ»§ID:", WS_VISIBLE | WS_CHILD,
                  20, 170, 60, 25, hwnd, NULL, hInstance, NULL);
     hAdminUserId = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                                 90, 170, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ç”¨æˆ·å:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÓÃ»§Ãû:", WS_VISIBLE | WS_CHILD,
                  200, 170, 50, 25, hwnd, NULL, hInstance, NULL);
     hAdminUserName = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                                   260, 170, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "å¯†ç :", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÃÜÂë:", WS_VISIBLE | WS_CHILD,
                  420, 170, 40, 25, hwnd, NULL, hInstance, NULL);
     hAdminPassword = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD,
                                   470, 170, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "æƒé™(0/1):", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "È¨ÏŞ(0/1):", WS_VISIBLE | WS_CHILD,
                  630, 170, 70, 25, hwnd, NULL, hInstance, NULL);
     hAuthority = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                               710, 170, 40, 25, hwnd, NULL, hInstance, NULL);
 
-    hAddUserBtn = CreateWindow("BUTTON", "æ·»åŠ ç”¨æˆ·", WS_VISIBLE | WS_CHILD,
+    hAddUserBtn = CreateWindow("BUTTON", "Ìí¼ÓÓÃ»§", WS_VISIBLE | WS_CHILD,
                                20, 210, 100, 30, hwnd, (HMENU)4, hInstance, NULL);
-    hDelUserBtn = CreateWindow("BUTTON", "åˆ é™¤ç”¨æˆ·", WS_VISIBLE | WS_CHILD,
+    hDelUserBtn = CreateWindow("BUTTON", "É¾³ıÓÃ»§", WS_VISIBLE | WS_CHILD,
                                130, 210, 100, 30, hwnd, (HMENU)5, hInstance, NULL);
-    hUpdateAuthBtn = CreateWindow("BUTTON", "ä¿®æ”¹æƒé™", WS_VISIBLE | WS_CHILD,
+    hUpdateAuthBtn = CreateWindow("BUTTON", "ĞŞ¸ÄÈ¨ÏŞ", WS_VISIBLE | WS_CHILD,
                                   240, 210, 100, 30, hwnd, (HMENU)6, hInstance, NULL);
-    hCheckUserBtn = CreateWindow("BUTTON", "æŸ¥çœ‹ç”¨æˆ·å€Ÿé˜…", WS_VISIBLE | WS_CHILD,
+    hCheckUserBtn = CreateWindow("BUTTON", "²é¿´ÓÃ»§½èÔÄ", WS_VISIBLE | WS_CHILD,
                                  350, 210, 100, 30, hwnd, (HMENU)7, hInstance, NULL);
 
-    // å¯†ç é‡ç½®éƒ¨åˆ†
-    CreateWindow("STATIC", "å¯†ç é‡ç½®", WS_VISIBLE | WS_CHILD,
+    // ÃÜÂëÖØÖÃ²¿·Ö
+    CreateWindow("STATIC", "ÃÜÂëÖØÖÃ", WS_VISIBLE | WS_CHILD,
                  20, 260, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ç”¨æˆ·ID:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ÓÃ»§ID:", WS_VISIBLE | WS_CHILD,
                  20, 290, 60, 25, hwnd, NULL, hInstance, NULL);
     hResetPassId = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                                 90, 290, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "æ–°å¯†ç :", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "ĞÂÃÜÂë:", WS_VISIBLE | WS_CHILD,
                  200, 290, 50, 25, hwnd, NULL, hInstance, NULL);
     hNewPass1 = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD,
                              260, 290, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "ç¡®è®¤å¯†ç :", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "È·ÈÏÃÜÂë:", WS_VISIBLE | WS_CHILD,
                  420, 290, 70, 25, hwnd, NULL, hInstance, NULL);
     hNewPass2 = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD,
                              500, 290, 150, 25, hwnd, NULL, hInstance, NULL);
 
-    hResetPassBtn = CreateWindow("BUTTON", "é‡ç½®å¯†ç ", WS_VISIBLE | WS_CHILD,
+    hResetPassBtn = CreateWindow("BUTTON", "ÖØÖÃÃÜÂë", WS_VISIBLE | WS_CHILD,
                                  660, 290, 100, 30, hwnd, (HMENU)8, hInstance, NULL);
 
-    // ç»“æœæ˜¾ç¤ºåŒºåŸŸ
+    // ½á¹ûÏÔÊ¾ÇøÓò
     hAdminResultText = CreateWindow("EDIT", "",
                                     WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE | ES_READONLY | 
                                     WS_VSCROLL | WS_HSCROLL | ES_AUTOHSCROLL,
@@ -167,7 +167,7 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     switch (uMsg) {
         case WM_COMMAND: {
             switch (LOWORD(wParam)) {
-                case 1: // æ·»åŠ å›¾ä¹¦
+                case 1: // Ìí¼ÓÍ¼Êé
                 {
                     char idStr[100], name[100], writer[100], lastNumStr[100], position[100];
                     GetWindowText(hBookId, idStr, 100);
@@ -180,38 +180,38 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                         int id = atoi(idStr);
                         int lastNum = atoi(lastNumStr);
                         if (addBooks(id, name, writer, lastNum, position) == 0) {
-                            MessageBox(hwnd, "æ·»åŠ å›¾ä¹¦æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                            MessageBox(hwnd, "Ìí¼ÓÍ¼Êé³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         } else {
-                            MessageBox(hwnd, "æ·»åŠ å›¾ä¹¦å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "Ìí¼ÓÍ¼ÊéÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         }
                     }
                     break;
                 }
 
-                case 2: // åˆ é™¤å›¾ä¹¦
+                case 2: // É¾³ıÍ¼Êé
                 {
                     char idStr[100];
                     GetWindowText(hBookId, idStr, 100);
                     if (strlen(idStr) > 0) {
                         int id = atoi(idStr);
                         if (deleteBooks(id) == 0) {
-                            MessageBox(hwnd, "åˆ é™¤å›¾ä¹¦æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                            MessageBox(hwnd, "É¾³ıÍ¼Êé³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         } else {
-                            MessageBox(hwnd, "åˆ é™¤å›¾ä¹¦å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "É¾³ıÍ¼ÊéÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         }
                     }
                     break;
                 }
 
-                case 3: // æŸ¥çœ‹å›¾ä¹¦å€Ÿé˜…æƒ…å†µ
+                case 3: // ²é¿´Í¼Êé½èÔÄÇé¿ö
                 {
                     char idStr[100];
-                    char result[MAX_RESULT_LENGTH];  // æ·»åŠ ç»“æœç¼“å†²åŒº
+                    char result[MAX_RESULT_LENGTH];  // Ìí¼Ó½á¹û»º³åÇø
                     GetWindowText(hBookId, idStr, 100);
                     if (strlen(idStr) > 0) {
                         int id = atoi(idStr);
                         if (checkBooksBorrow(id, result) == -1) {
-                            SetWindowText(hAdminResultText, "æœªæ‰¾åˆ°è¯¥å›¾ä¹¦çš„å€Ÿé˜…è®°å½•\r\n");
+                            SetWindowText(hAdminResultText, "Î´ÕÒµ½¸ÃÍ¼ÊéµÄ½èÔÄ¼ÇÂ¼\r\n");
                         } else {
                             SetWindowText(hAdminResultText, result);
                         }
@@ -219,7 +219,7 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     break;
                 }
 
-                case 4: // æ·»åŠ ç”¨æˆ·
+                case 4: // Ìí¼ÓÓÃ»§
                 {
                     char idStr[100], name[100], password[100], authorityStr[100];
                     GetWindowText(hAdminUserId, idStr, 100);
@@ -231,30 +231,30 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                         int id = atoi(idStr);
                         int authority = atoi(authorityStr);
                         if (addUser(id, name, password, authority) == 0) {
-                            MessageBox(hwnd, "æ·»åŠ ç”¨æˆ·æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                            MessageBox(hwnd, "Ìí¼ÓÓÃ»§³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         } else {
-                            MessageBox(hwnd, "æ·»åŠ ç”¨æˆ·å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "Ìí¼ÓÓÃ»§Ê§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         }
                     }
                     break;
                 }
 
-                case 5: // åˆ é™¤ç”¨æˆ·
+                case 5: // É¾³ıÓÃ»§
                 {
                     char idStr[100];
                     GetWindowText(hAdminUserId, idStr, 100);
                     if (strlen(idStr) > 0) {
                         int id = atoi(idStr);
                         if (deleteUser(id) == 0) {
-                            MessageBox(hwnd, "åˆ é™¤ç”¨æˆ·æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                            MessageBox(hwnd, "É¾³ıÓÃ»§³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         } else {
-                            MessageBox(hwnd, "åˆ é™¤ç”¨æˆ·å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "É¾³ıÓÃ»§Ê§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         }
                     }
                     break;
                 }
 
-                case 6: // ä¿®æ”¹æƒé™
+                case 6: // ĞŞ¸ÄÈ¨ÏŞ
                 {
                     char idStr[100], authorityStr[100];
                     GetWindowText(hAdminUserId, idStr, 100);
@@ -265,28 +265,28 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                         int result = updateAuthority(id, authority);
                         switch(result) {
                             case 0:
-                                MessageBox(hwnd, "ä¿®æ”¹æƒé™æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                                MessageBox(hwnd, "ĞŞ¸ÄÈ¨ÏŞ³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                                 break;
                             case 1:
-                                MessageBox(hwnd, "ç”¨æˆ·IDé”™è¯¯ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "ÓÃ»§ID´íÎó£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                             case 2:
-                                MessageBox(hwnd, "æƒé™å€¼é”™è¯¯ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "È¨ÏŞÖµ´íÎó£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                         }
                     }
                     break;
                 }
 
-                case 7: // æŸ¥çœ‹ç”¨æˆ·å€Ÿé˜…
+                case 7: // ²é¿´ÓÃ»§½èÔÄ
                 {
                     char idStr[100];
-                    char result[MAX_RESULT_LENGTH];  // æ·»åŠ ç»“æœç¼“å†²åŒº
+                    char result[MAX_RESULT_LENGTH];  // Ìí¼Ó½á¹û»º³åÇø
                     GetWindowText(hAdminUserId, idStr, 100);
                     if (strlen(idStr) > 0) {
                         int id = atoi(idStr);
                         if (checkUserBorrow(id, result) == -1) {
-                            SetWindowText(hAdminResultText, "æœªæ‰¾åˆ°è¯¥ç”¨æˆ·çš„å€Ÿé˜…è®°å½•\r\n");
+                            SetWindowText(hAdminResultText, "Î´ÕÒµ½¸ÃÓÃ»§µÄ½èÔÄ¼ÇÂ¼\r\n");
                         } else {
                             SetWindowText(hAdminResultText, result);
                         }
@@ -294,7 +294,7 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     break;
                 }
 
-                case 8: // é‡ç½®å¯†ç 
+                case 8: // ÖØÖÃÃÜÂë
                 {
                     char idStr[100], pass1[100], pass2[100];
                     GetWindowText(hResetPassId, idStr, 100);
@@ -304,13 +304,13 @@ LRESULT CALLBACK AdminWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
                     if (strlen(idStr) > 0 && strlen(pass1) > 0 && strlen(pass2) > 0) {
                         int id = atoi(idStr);
                         if(strcmp(pass1, pass2) != 0) {
-                            MessageBox(hwnd, "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸ä¸€è‡´ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "Á½´ÎÊäÈëµÄÃÜÂë²»Ò»ÖÂ£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         } else {
                             int result = RootResetPass(id, pass1);
                             if (result == -1) {
-                                MessageBox(hwnd, "é‡ç½®å¯†ç å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "ÖØÖÃÃÜÂëÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                             } else {
-                                MessageBox(hwnd, "å¯†ç é‡ç½®æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                                MessageBox(hwnd, "ÃÜÂëÖØÖÃ³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                             }
                         }
                     }

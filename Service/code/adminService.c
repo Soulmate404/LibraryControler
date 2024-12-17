@@ -49,14 +49,14 @@ int selectUser(int id, char* result) {
         return -1;
     }
     
-    // æ¸…ç©ºç»“æœå­—ç¬¦ä¸²
+    // Çå¿Õ½á¹û×Ö·û´®
     result[0] = '\0';
     
-    // æ·»åŠ è¡¨å¤´
-    strcat(result, "ç”¨æˆ·ID    ç”¨æˆ·å              å¯†ç                 æƒé™\r\n");
+    // Ìí¼Ó±íÍ·
+    strcat(result, "ÓÃ»§ID    ÓÃ»§Ãû              ÃÜÂë                È¨ÏŞ\r\n");
     strcat(result, "--------------------------------------------------------\r\n");
     
-    // æ ¼å¼åŒ–è¾“å‡º
+    // ¸ñÊ½»¯Êä³ö
     char temp[100];
     sprintf(temp, "%-10s", row1[0]); strcat(result, temp);
     sprintf(temp, "%-20s", row1[1]); strcat(result, temp);
@@ -81,7 +81,7 @@ int updateAuthority(int id,int authority) {
 
 int checkUserBorrow(int id, char* result) {
     result[0] = '\0';
-    strcat(result, "ç”¨æˆ·ID    å›¾ä¹¦ID    å€Ÿé˜…æ—¶é—´            çŠ¶æ€\r\n");
+    strcat(result, "ÓÃ»§ID    Í¼ÊéID    ½èÔÄÊ±¼ä            ×´Ì¬\r\n");
     strcat(result, "------------------------------------------------\r\n");
     
     if (id != 0) {
@@ -101,7 +101,7 @@ int checkUserBorrow(int id, char* result) {
         }
         return 0;
     } else {
-        // å¤„ç†æŸ¥çœ‹æ‰€æœ‰å€Ÿé˜…è®°å½•çš„æƒ…å†µ
+        // ´¦Àí²é¿´ËùÓĞ½èÔÄ¼ÇÂ¼µÄÇé¿ö
         MYSQL_ROWS rows2 = CheckAllBorrow();
         MYSQL_ROWS *rows = &rows2;
         if (rows->data == NULL) {
@@ -128,11 +128,11 @@ int checkBooksBorrow(int id, char* result) {
         return -1;
     }
     
-    // æ¸…ç©ºç»“æœå­—ç¬¦ä¸²
+    // Çå¿Õ½á¹û×Ö·û´®
     result[0] = '\0';
     
-    // æ·»åŠ è¡¨å¤´
-    strcat(result, "å›¾ä¹¦ID    å€Ÿé˜…ç”¨æˆ·ID    å€Ÿé˜…æ—¶é—´            çŠ¶æ€\r\n");
+    // Ìí¼Ó±íÍ·
+    strcat(result, "ÓÃ»§ID    Í¼ÊéID    ½èÔÄÊ±¼ä            ×´Ì¬\r\n");
     strcat(result, "----------------------------------------------------\r\n");
     
     while (rows) {

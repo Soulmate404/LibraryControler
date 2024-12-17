@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Controller/code/admin_window.c" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Controller/code/login.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Controller/code/user_window.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Mapper/code/AdminMapper.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Mapper/code/BookBorrowMapper.c" charset="GBK" />
     <file url="file://$PROJECT_DIR$/Mapper/code/SQLPointer.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Service/code/adminService.c" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/Service/code/bookBorrowService.c" charset="GBK" />
   </component>
 </project>

@@ -7,11 +7,11 @@
 #include "admin_window.h"
 #include "user_window.h"
 
-// å‡½æ•°å£°æ˜
+// º¯ÊıÉùÃ÷
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-// æ§ä»¶å¥æŸ„
+// ¿Ø¼ş¾ä±ú
 HWND hUsername, hPassword, hLogin, hSignup;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
@@ -28,37 +28,37 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     RegisterClass(&wc);
 
-    // è·å–å±å¹•å°ºå¯¸
+    // »ñÈ¡ÆÁÄ»³ß´ç
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-    // è®¾ç½®çª—å£å°ºå¯¸
+    // ÉèÖÃ´°¿Ú³ß´ç
     int windowWidth = 400;
     int windowHeight = 300;
 
-    // è®¡ç®—çª—å£å±…ä¸­ä½ç½®
+    // ¼ÆËã´°¿Ú¾ÓÖĞÎ»ÖÃ
     int posX = (screenWidth - windowWidth) / 2;
     int posY = (screenHeight - windowHeight) / 2;
 
-    // åˆ›å»ºçª—å£ï¼ˆæ›´æ–°ä½ç½®å‚æ•°ï¼‰
+    // ´´½¨´°¿Ú£¨¸üĞÂÎ»ÖÃ²ÎÊı£©
     HWND hwnd = CreateWindowEx(
-            0,                          // æ‰©å±•æ ·å¼
-            CLASS_NAME,                 // çª—å£ç±»å
-            "å›¾ä¹¦ç®¡ç†ç³»ç»Ÿç™»å½•",         // çª—å£æ ‡é¢˜
-            WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, // ä¿®æ”¹çª—å£æ ·å¼ï¼Œç§»é™¤æœ€å¤§åŒ–æŒ‰é’®
-            posX, posY,                // å±…ä¸­ä½ç½®
-            windowWidth, windowHeight,  // ï¿½ï¿½å£å¤§å°
-            NULL,       // çˆ¶çª—å£å¥æŸ„
-            NULL,       // èœå•å¥æŸ„
-            hInstance,  // å®ä¾‹å¥æŸ„
-            NULL        // é™„åŠ æ•°æ®
+            0,                          // À©Õ¹ÑùÊ½
+            CLASS_NAME,                 // ´°¿ÚÀàÃû
+            "Í¼Êé¹ÜÀíÏµÍ³µÇÂ¼",         // ´°¿Ú±êÌâ
+            WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX, // ĞŞ¸Ä´°¿ÚÑùÊ½£¬ÒÆ³ı×î´ó»¯°´Å¥
+            posX, posY,                // ¾ÓÖĞÎ»ÖÃ
+            windowWidth, windowHeight,  // ??¿Ú´óĞ¡
+            NULL,       // ¸¸´°¿Ú¾ä±ú
+            NULL,       // ²Ëµ¥¾ä±ú
+            hInstance,  // ÊµÀı¾ä±ú
+            NULL        // ¸½¼ÓÊı¾İ
     );
 
     if (hwnd == NULL) {
         return 0;
     }
 
-    // åˆ›å»ºç”¨æˆ·åè¾“å…¥æ¡†
+    // ´´½¨ÓÃ»§ÃûÊäÈë¿ò
     hUsername = CreateWindow(
             "EDIT", "",
             WS_VISIBLE | WS_CHILD | WS_BORDER,
@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             hwnd, NULL, hInstance, NULL
     );
 
-    // åˆ›å»ºå¯†ç è¾“å…¥æ¡†
+    // ´´½¨ÃÜÂëÊäÈë¿ò
     hPassword = CreateWindow(
             "EDIT", "",
             WS_VISIBLE | WS_CHILD | WS_BORDER | ES_PASSWORD,
@@ -74,9 +74,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             hwnd, NULL, hInstance, NULL
     );
 
-    // åˆ›å»ºç™»å½•æŒ‰é’®
+    // ´´½¨µÇÂ¼°´Å¥
     hLogin = CreateWindow(
-            "BUTTON", "ç™»å½•",
+            "BUTTON", "µÇÂ¼",
             WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
             50, 150, 280, 35,
             hwnd, (HMENU)1, hInstance, NULL
@@ -84,10 +84,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-    // æ˜¾ç¤ºçª—å£
+    // ÏÔÊ¾´°¿Ú
     ShowWindow(hwnd, nCmdShow);
 
-    // æ¶ˆæ¯å¾ªç¯
+    // ÏûÏ¢Ñ­»·
     MSG msg = {0};
     while (GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
@@ -101,42 +101,42 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     switch (uMsg) {
         case WM_CREATE: {
-            // è®¾ç½®çª—å£èƒŒæ™¯è‰²ä¸ºç™½è‰²
+            // ÉèÖÃ´°¿Ú±³¾°É«Îª°×É«
             SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)CreateSolidBrush(RGB(255, 255, 255)));
             return 0;
         }
 
         case WM_COMMAND: {
-            if (LOWORD(wParam) == 1) { // ç™»å½•æŒ‰é’®è¢«ç‚¹å‡»
+            if (LOWORD(wParam) == 1) { // µÇÂ¼°´Å¥±»µã»÷
                 char username[100];
                 char password[100];
 
                 GetWindowText(hUsername, username, 100);
                 GetWindowText(hPassword, password, 100);
 
-                // å°†ç”¨æˆ·åè½¬æ¢ä¸ºæ•´æ•°ID
+                // ½«ÓÃ»§Ãû×ª»»ÎªÕûÊıID
                 int userId = atoi(username);
 
-                // è°ƒç”¨Loginå‡½æ•°è¿›è¡ŒéªŒè¯
+                // µ÷ÓÃLoginº¯Êı½øĞĞÑéÖ¤
                 int loginResult = login(userId, password);
 
                 switch(loginResult) {
                     case -1:
-                        MessageBox(hwnd, "ç”¨æˆ·ä¸å­˜åœ¨ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                        MessageBox(hwnd, "ÓÃ»§²»´æÔÚ£¡", "´íÎó", MB_OK | MB_ICONERROR);
                         break;
-                    case 0: // ç®¡ç†å‘˜ç™»å½•æˆåŠŸ
+                    case 0: // ¹ÜÀíÔ±µÇÂ¼³É¹¦
                         ShowWindow(hwnd, SW_HIDE);
                         HWND adminWindow = CreateAdminWindow(GetModuleHandle(NULL));
                         if (adminWindow == NULL) {
-                            MessageBox(hwnd, "åˆ›å»ºç®¡ç†å‘˜ç•Œé¢å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "´´½¨¹ÜÀíÔ±½çÃæÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                             ShowWindow(hwnd, SW_SHOW);
                         }
                         break;
-                    case 1: // æ™®é€šç”¨æˆ·ç™»å½•æˆåŠŸ
+                    case 1: // ÆÕÍ¨ÓÃ»§µÇÂ¼³É¹¦
                         ShowWindow(hwnd, SW_HIDE);
                         HWND userWindow = CreateUserWindow(GetModuleHandle(NULL), userId);
                         if (userWindow == NULL) {
-                            MessageBox(hwnd, "åˆ›å»ºç”¨æˆ·ç•Œé¢å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "´´½¨ÓÃ»§½çÃæÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                             ShowWindow(hwnd, SW_SHOW);
                         }
                         break;

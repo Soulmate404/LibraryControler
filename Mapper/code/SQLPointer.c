@@ -23,8 +23,8 @@ void init(){
     }
 
     // 设置字符集为 utf8
-    mysql_options(conn, MYSQL_SET_CHARSET_NAME, "utf8");
-    mysql_options(conn, MYSQL_INIT_COMMAND, "SET NAMES utf8");
+    mysql_options(conn, MYSQL_SET_CHARSET_NAME, "gbk");
+    mysql_options(conn, MYSQL_INIT_COMMAND, "SET NAMES gbk");
 
 
 

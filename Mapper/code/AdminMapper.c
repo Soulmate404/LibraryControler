@@ -193,75 +193,75 @@ int AddUser(int id, char* name, char* pass_wd, int authority) {
 
     const char* query = "INSERT INTO user (id, name, pass_wd, authority) VALUES (?, ?, ?, ?)";
 
-    // åˆå§‹åŒ– statement
+    // ³õÊ¼»¯ statement
     stmt = mysql_stmt_init(conn);
     if (stmt == NULL) {
         fprintf(stderr, "mysql_stmt_init() failed: %s\n", mysql_error(conn));
         return -1;
     }
 
-    // å‡†å¤‡è¯­å¥
+    // ×¼±¸Óï¾ä
     if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
         fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
         mysql_stmt_close(stmt);
         return -1;
     }
 
-    // åˆå§‹åŒ–ç»‘å®šç»“æ„ä½“
+    // ³õÊ¼»¯°ó¶¨½á¹¹Ìå
     MYSQL_BIND bind[4];
     memset(bind, 0, sizeof(bind));
 
-    // è®¾ç½®å‚æ•°é•¿åº¦
+    // ÉèÖÃ²ÎÊı³¤¶È
     unsigned long name_length = strlen(name);
     unsigned long pass_length = strlen(pass_wd);
 
-    // ç»‘å®š id
+    // °ó¶¨ id
     bind[0].buffer_type = MYSQL_TYPE_LONG;
     bind[0].buffer = &id;
     bind[0].is_null = 0;
     bind[0].length = 0;
 
-    // ç»‘å®š name
+    // °ó¶¨ name
     bind[1].buffer_type = MYSQL_TYPE_STRING;
     bind[1].buffer = name;
     bind[1].buffer_length = name_length;
     bind[1].length = &name_length;
     bind[1].is_null = 0;
 
-    // ç»‘å®š password
+    // °ó¶¨ password
     bind[2].buffer_type = MYSQL_TYPE_STRING;
     bind[2].buffer = pass_wd;
     bind[2].buffer_length = pass_length;
     bind[2].length = &pass_length;
     bind[2].is_null = 0;
 
-    // ç»‘å®š authority
+    // °ó¶¨ authority
     bind[3].buffer_type = MYSQL_TYPE_LONG;
     bind[3].buffer = &authority;
     bind[3].is_null = 0;
     bind[3].length = 0;
 
-    // ç»‘å®šå‚æ•°
+    // °ó¶¨²ÎÊı
     if (mysql_stmt_bind_param(stmt, bind) != 0) {
         fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
         mysql_stmt_close(stmt);
         return -1;
     }
 
-    // æ‰§è¡Œè¯­å¥
+    // Ö´ĞĞÓï¾ä
     if (mysql_stmt_execute(stmt) != 0) {
         fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
         mysql_stmt_close(stmt);
         return -1;
     }
 
-    // æ£€æŸ¥å½±å“çš„è¡Œæ•°
+    // ¼ì²éÓ°ÏìµÄĞĞÊı
     if (mysql_stmt_affected_rows(stmt) > 0) {
         mysql_stmt_close(stmt);
-        return 0;  // æ’å…¥æˆåŠŸ
+        return 0;  // ²åÈë³É¹¦
     } else {
         mysql_stmt_close(stmt);
-        return -1;  // æ’å…¥å¤±è´¥
+        return -1;  // ²åÈëÊ§°Ü
     }
 }
 int DeleteBook( int id) {
@@ -312,10 +312,10 @@ int DeleteBook( int id) {
 
     if (mysql_stmt_affected_rows(stmt) > 0) {
         mysql_stmt_free_result(stmt);
-        return 0;  // åˆ é™¤æˆåŠŸ
+        return 0;  // É¾³ı³É¹¦
     } else {
         mysql_stmt_free_result(stmt);
-        return -1;  // åˆ é™¤å¤±è´¥
+        return -1;  // É¾³ıÊ§°Ü
     }
 }
 int DeleteUser(int id){
@@ -435,7 +435,7 @@ MYSQL_ROWS CheckUserBorrow(int id){
             break;
         }
 
-        // ä¸ºè¡Œæ•°æ®åˆ†é…å†…å­˜å¹¶å¤åˆ¶æ•°æ®
+        // ÎªĞĞÊı¾İ·ÖÅäÄÚ´æ²¢¸´ÖÆÊı¾İ
         right->data = malloc(4 * sizeof(char *));
         for(int i = 0; i < 4; i++) {
             if(row1[i]) {
@@ -450,7 +450,7 @@ MYSQL_ROWS CheckUserBorrow(int id){
         if (head == NULL) {
             head = left = right;
         } else {
-            left->next = right;  // ä¿®æ­£é“¾è¡¨è¿æ¥
+            left->next = right;  // ĞŞÕıÁ´±íÁ¬½Ó
             left = right;
         }
     }
@@ -471,7 +471,7 @@ MYSQL_ROWS CheckAllBorrow() {
     char sql[256];
     strcpy(sql, "SELECT * FROM borrow;");
 
-    // æ‰§è¡ŒæŸ¥è¯¢
+    // Ö´ĞĞ²éÑ¯
     if (mysql_query(conn, sql)) {
         fprintf(stderr, "SQL error: %s\n", mysql_error(conn));
         MYSQL_ROWS s;
@@ -542,7 +542,7 @@ MYSQL_ROWS CheckBooksBorrow(int id){
             break;
         }
         
-        // ä¸ºè¡Œæ•°æ®åˆ†é…å†…å­˜å¹¶å¤åˆ¶æ•°æ®
+        // ÎªĞĞÊı¾İ·ÖÅäÄÚ´æ²¢¸´ÖÆÊı¾İ
         right->data = malloc(4 * sizeof(char *));
         for(int i = 0; i < 4; i++) {
             if(row1[i]) {
@@ -557,7 +557,7 @@ MYSQL_ROWS CheckBooksBorrow(int id){
         if (head == NULL) {
             head = left = right;
         } else {
-            left->next = right;  // ä¿®æ­£é“¾è¡¨è¿æ¥
+            left->next = right;  // ĞŞÕıÁ´±íÁ¬½Ó
             left = right;
         }
     }
@@ -578,7 +578,7 @@ int RootResetPass(int id, char *pass) {
         return -1;
     }
 
-    // ä¿®æ­£ SQL è¯­å¥ï¼Œç§»é™¤å¤šä½™çš„å¼•å·
+    // ĞŞÕı SQL Óï¾ä£¬ÒÆ³ı¶àÓàµÄÒıºÅ
     const char *sql = "UPDATE user SET pass_wd = ? WHERE id = ?";
     
     stmt = mysql_stmt_init(conn);
@@ -593,21 +593,21 @@ int RootResetPass(int id, char *pass) {
         return -1;
     }
 
-    // åˆå§‹åŒ–ç»‘å®šç»“æ„ä½“
+    // ³õÊ¼»¯°ó¶¨½á¹¹Ìå
     MYSQL_BIND bind[2];
     memset(bind, 0, sizeof(bind));
 
-    // è®¾ç½®å¯†ç é•¿åº¦
+    // ÉèÖÃÃÜÂë³¤¶È
     unsigned long pass_length = strlen(pass);
 
-    // ç»‘å®šå¯†ç å‚æ•°
+    // °ó¶¨ÃÜÂë²ÎÊı
     bind[0].buffer_type = MYSQL_TYPE_STRING;
     bind[0].buffer = pass;
     bind[0].buffer_length = pass_length;
     bind[0].length = &pass_length;
     bind[0].is_null = 0;
 
-    // ç»‘å®š ID å‚æ•°
+    // °ó¶¨ ID ²ÎÊı
     bind[1].buffer_type = MYSQL_TYPE_LONG;
     bind[1].buffer = &id;
     bind[1].is_null = 0;

@@ -8,17 +8,17 @@
 #include "../../Service/code/bookBorrowService.h"
 #include "user_window.h"
 
-// å…¨å±€å˜é‡å£°æ˜
+// È«¾Ö±äÁ¿ÉùÃ÷
 static HWND hSearchId, hSearchName, hSearchBtn;
 static HWND hBorrowId, hBorrowBtn, hReturnBtn;
 static HWND hResultText;
-static int currentUserId; // å­˜å‚¨å½“å‰ç™»å½•ç”¨æˆ·çš„ID
+static int currentUserId; // ´æ´¢µ±Ç°µÇÂ¼ÓÃ»§µÄID
 
-// å‡½æ•°å®ç°
+// º¯ÊıÊµÏÖ
 HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
     currentUserId = userId;
 
-    // æ³¨å†Œçª—å£ç±»
+    // ×¢²á´°¿ÚÀà
     const char CLASS_NAME[] = "User Window Class";
 
     WNDCLASS wc = {0};
@@ -30,7 +30,7 @@ HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
 
     RegisterClass(&wc);
 
-    // åˆ›å»ºçª—å£ï¼ˆå±…ä¸­æ˜¾ç¤ºï¼‰
+    // ´´½¨´°¿Ú£¨¾ÓÖĞÏÔÊ¾£©
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
     int screenHeight = GetSystemMetrics(SM_CYSCREEN);
     int windowWidth = 800;
@@ -41,7 +41,7 @@ HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
     HWND hwnd = CreateWindowEx(
             0,
             CLASS_NAME,
-            "å›¾ä¹¦ç®¡ç†ç³»ç»Ÿ - ç”¨æˆ·ç•Œé¢",
+            "Í¼Êé¹ÜÀíÏµÍ³ - ÓÃ»§½çÃæ",
             WS_OVERLAPPEDWINDOW,
             posX, posY, windowWidth, windowHeight,
             NULL,
@@ -54,48 +54,48 @@ HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
         return NULL;
     }
 
-    // åˆ›å»ºæ§ä»¶
-    // æŸ¥è¯¢éƒ¨åˆ†
-    CreateWindow("STATIC", "æŒ‰IDæŸ¥è¯¢:", WS_VISIBLE | WS_CHILD,
+    // ´´½¨¿Ø¼ş
+    // ²éÑ¯²¿·Ö
+    CreateWindow("STATIC", "°´ID²éÑ¯:", WS_VISIBLE | WS_CHILD,
                  20, 20, 80, 25, hwnd, NULL, hInstance, NULL);
 
     hSearchId = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                              100, 20, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    CreateWindow("STATIC", "æŒ‰ä¹¦åæŸ¥è¯¢:", WS_VISIBLE | WS_CHILD,
+    CreateWindow("STATIC", "°´ÊéÃû²éÑ¯:", WS_VISIBLE | WS_CHILD,
                  220, 20, 80, 25, hwnd, NULL, hInstance, NULL);
 
     hSearchName = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                                300, 20, 200, 25, hwnd, NULL, hInstance, NULL);
 
-    hSearchBtn = CreateWindow("BUTTON", "æŸ¥è¯¢", WS_VISIBLE | WS_CHILD,
+    hSearchBtn = CreateWindow("BUTTON", "²éÑ¯", WS_VISIBLE | WS_CHILD,
                               520, 20, 80, 25, hwnd, (HMENU)1, hInstance, NULL);
 
-    // å€Ÿè¿˜ä¹¦éƒ¨åˆ†
-    CreateWindow("STATIC", "å›¾ä¹¦ID:", WS_VISIBLE | WS_CHILD,
+    // ½è»¹Êé²¿·Ö
+    CreateWindow("STATIC", "Í¼ÊéID:", WS_VISIBLE | WS_CHILD,
                  20, 60, 80, 25, hwnd, NULL, hInstance, NULL);
 
     hBorrowId = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER,
                              100, 60, 100, 25, hwnd, NULL, hInstance, NULL);
 
-    hBorrowBtn = CreateWindow("BUTTON", "å€Ÿä¹¦", WS_VISIBLE | WS_CHILD,
+    hBorrowBtn = CreateWindow("BUTTON", "½èÊé", WS_VISIBLE | WS_CHILD,
                               220, 60, 80, 25, hwnd, (HMENU)2, hInstance, NULL);
 
-    hReturnBtn = CreateWindow("BUTTON", "è¿˜ä¹¦", WS_VISIBLE | WS_CHILD,
+    hReturnBtn = CreateWindow("BUTTON", "»¹Êé", WS_VISIBLE | WS_CHILD,
                               320, 60, 80, 25, hwnd, (HMENU)3, hInstance, NULL);
 
-    // åˆ›å»ºå­—ä½“ï¼Œç”¨äºé¿å…æ˜¾ç¤ºåŒºåŸŸçš„ä¹±ç 
+    // ´´½¨×ÖÌå£¬ÓÃÓÚ±ÜÃâÏÔÊ¾ÇøÓòµÄÂÒÂë
     HFONT hFont = CreateFont(
-        16, 0,                    // é«˜åº¦16, å®½åº¦è‡ªåŠ¨
-        0, 0,                     // æ–‡æœ¬å€¾æ–œå’Œæ—‹è½¬è§’åº¦
-        FW_NORMAL,               // å­—ä½“ç²—ç»†
-        FALSE, FALSE, FALSE,     // æ–œä½“ã€ä¸‹åˆ’çº¿ã€åˆ é™¤çº¿
-        DEFAULT_CHARSET,         // ä½¿ç”¨é»˜è®¤å­—ç¬¦é›†
+        16, 0,                    // ¸ß¶È16, ¿í¶È×Ô¶¯
+        0, 0,                     // ÎÄ±¾ÇãĞ±ºÍĞı×ª½Ç¶È
+        FW_NORMAL,               // ×ÖÌå´ÖÏ¸
+        FALSE, FALSE, FALSE,     // Ğ±Ìå¡¢ÏÂ»®Ïß¡¢É¾³ıÏß
+        DEFAULT_CHARSET,         // Ê¹ÓÃÄ¬ÈÏ×Ö·û¼¯
         OUT_DEFAULT_PRECIS,
         CLIP_DEFAULT_PRECIS,
         DEFAULT_QUALITY,
-        FIXED_PITCH | FF_MODERN, // ä½¿ç”¨ç­‰å®½å­—ä½“
-        "Consolas"              // ä½¿ç”¨ Consolas ç­‰å®½å­—ä½“
+        FIXED_PITCH | FF_MODERN, // Ê¹ÓÃµÈ¿í×ÖÌå
+        "Consolas"              // Ê¹ÓÃ Consolas µÈ¿í×ÖÌå
     );
 
     hResultText = CreateWindow("EDIT", "",
@@ -105,7 +105,7 @@ HWND CreateUserWindow(HINSTANCE hInstance, int userId) {
         hwnd, NULL, hInstance, NULL
     );
 
-    // è®¾ç½®å­—ä½“
+    // ÉèÖÃ×ÖÌå
     SendMessage(hResultText, WM_SETFONT, (WPARAM)hFont, TRUE);
 
     ShowWindow(hwnd, SW_SHOW);
@@ -116,28 +116,28 @@ LRESULT CALLBACK UserWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     switch (uMsg) {
         case WM_COMMAND: {
             switch (LOWORD(wParam)) {
-                case 1: // æŸ¥è¯¢æŒ‰é’®
+                case 1: // ²éÑ¯°´Å¥
                 {
                     char idStr[100], nameStr[100], result[MAX_RESULT_LENGTH] = "";
                     GetWindowText(hSearchId, idStr, 100);
                     GetWindowText(hSearchName, nameStr, 100);
 
                     if (strlen(idStr) == 0 && strlen(nameStr) == 0) {
-                        MessageBox(hwnd, "è¯·è¾“å…¥æŸ¥è¯¢æ¡ä»¶ï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                        MessageBox(hwnd, "ÇëÊäÈë²éÑ¯Ìõ¼ş£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         break;
                     }
 
                     if (strlen(idStr) > 0) {
                         int bookId = atoi(idStr);
                         if (selectByID(bookId, result) == -1) {
-                            SetWindowText(hResultText, "æœªæ‰¾åˆ°å¯¹åº”å›¾ä¹¦\r\n");
+                            SetWindowText(hResultText, "Î´ÕÒµ½¶ÔÓ¦Í¼Êé\r\n");
                         } else {
                             SetWindowText(hResultText, result);
                         }
                     }
                     else if (strlen(nameStr) > 0) {
                         if (selectByName(nameStr, result) == -1) {
-                            SetWindowText(hResultText, "æœªæ‰¾åˆ°å¯¹åº”å›¾ä¹¦\r\n");
+                            SetWindowText(hResultText, "Î´ÕÒµ½¶ÔÓ¦Í¼Êé\r\n");
                         } else {
                             SetWindowText(hResultText, result);
                         }
@@ -145,13 +145,13 @@ LRESULT CALLBACK UserWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                     break;
                 }
 
-                case 2: // å€Ÿä¹¦æŒ‰é’®
+                case 2: // ½èÊé°´Å¥
                 {
                     char bookIdStr[100];
                     GetWindowText(hBorrowId, bookIdStr, 100);
                     if (strlen(bookIdStr) > 0) {
                         int bookId = atoi(bookIdStr);
-                        // è·å–å½“å‰æ—¶é—´
+                        // »ñÈ¡µ±Ç°Ê±¼ä
                         time_t now;
                         time(&now);
                         char timeStr[100];
@@ -160,37 +160,37 @@ LRESULT CALLBACK UserWindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                         int result = addBorrow(currentUserId, NULL, bookId, timeStr);
                         switch(result) {
                             case 0:
-                                MessageBox(hwnd, "å€Ÿä¹¦æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                                MessageBox(hwnd, "½èÊé³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                                 break;
                             case 1:
-                                MessageBox(hwnd, "è¯¥ä¹¦ä¸å­˜åœ¨ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "¸ÃÊé²»´æÔÚ£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                             case 2:
-                                MessageBox(hwnd, "è¯¥ä¹¦å·²è¢«å€Ÿå®Œï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "¸ÃÊéÒÑ±»½èÍê£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                             case 3:
-                                MessageBox(hwnd, "æ‚¨å·²ç»å€Ÿé˜…è¿‡è¿™æœ¬ä¹¦ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "ÄúÒÑ¾­½èÔÄ¹ıÕâ±¾Êé£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                             default:
-                                MessageBox(hwnd, "å€Ÿä¹¦å¤±è´¥ï¼", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                                MessageBox(hwnd, "½èÊéÊ§°Ü£¡", "´íÎó", MB_OK | MB_ICONERROR);
                                 break;
                         }
                     } else {
-                        MessageBox(hwnd, "è¯·è¾“å…¥å›¾ä¹¦IDï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                        MessageBox(hwnd, "ÇëÊäÈëÍ¼ÊéID£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                     }
                     break;
                 }
 
-                case 3: // è¿˜ä¹¦æŒ‰é’®
+                case 3: // »¹Êé°´Å¥
                 {
                     char bookIdStr[100];
                     GetWindowText(hBorrowId, bookIdStr, 100);
                     if (strlen(bookIdStr) > 0) {
                         int bookId = atoi(bookIdStr);
                         if (deleteBorrow(currentUserId, bookId) == 0) {
-                            MessageBox(hwnd, "è¿˜ä¹¦æˆåŠŸï¼", "æç¤º", MB_OK | MB_ICONINFORMATION);
+                            MessageBox(hwnd, "»¹Êé³É¹¦£¡", "ÌáÊ¾", MB_OK | MB_ICONINFORMATION);
                         } else {
-                            MessageBox(hwnd, "è¿˜ä¹¦å¤±è´¥ï¼è¯·ç¡®è®¤æ˜¯å¦å€Ÿé˜…è¿‡æ­¤ä¹¦ã€‚", "é”™è¯¯", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "»¹ÊéÊ§°Ü£¡ÇëÈ·ÈÏÊÇ·ñ½èÔÄ¹ı´ËÊé¡£", "´íÎó", MB_OK | MB_ICONERROR);
                         }
                     }
                     break;

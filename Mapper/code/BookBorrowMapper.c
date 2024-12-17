@@ -79,7 +79,7 @@ MYSQL_ROW SelectByID(int id) {
 
     MYSQL_ROW mysqlRow = mysql_fetch_row(res);
     if (mysqlRow == NULL) {
-        mysql_free_result(res);  // ä¸è¦å¿˜è®°é‡Šæ”¾èµ„æº
+        mysql_free_result(res);  // ²»ÒªÍü¼ÇÊÍ·Å×ÊÔ´
         return NULL;
     }
 
@@ -122,7 +122,7 @@ MYSQL_RES * SelectByName(char *name) {
         fprintf(stderr, "SELECT query failed: %s\n", mysql_error(conn));
         MYSQL_RES *d = NULL;
         d->data=NULL;
-        return  d; // æŸ¥è¯¢å¤±è´¥ï¼Œè¿”å›ž NULL
+        return  d; // ²éÑ¯Ê§°Ü£¬·µ»Ø NULL
     }
 
 
@@ -131,12 +131,12 @@ MYSQL_RES * SelectByName(char *name) {
         fprintf(stderr, "Store result failed: %s\n", mysql_error(conn));
         MYSQL_RES *d;
         d->data=NULL;
-        return  d; // èŽ·å–ç»“æžœå¤±è´¥ï¼Œè¿”å›ž NULL
+        return  d; // »ñÈ¡½á¹ûÊ§°Ü£¬·µ»Ø NULL
     }
 
 
     if (mysql_num_rows(res) == 0) {
-        mysql_free_result(res);  // é‡Šæ”¾ç»“æžœé›†
+        mysql_free_result(res);  // ÊÍ·Å½á¹û¼¯
         MYSQL_RES *d;
         d->data=NULL;
         return  d;
@@ -150,7 +150,7 @@ int AddBorrow(int userid, char* name, int bookid, char* time) {
         return -1;
     }
 
-    const char* query = "INSERT INTO borrow (user_id, book_id, borrow_time, status) VALUES (?, ?, ?, 'å€Ÿå‡º')";
+    const char* query = "INSERT INTO borrow (user_id, book_id, borrow_time, status) VALUES (?, ?, ?, '½è³ö')";
 
     stmt = mysql_stmt_init(conn);
     if (stmt == NULL) {
@@ -164,26 +164,26 @@ int AddBorrow(int userid, char* name, int bookid, char* time) {
         return -1;
     }
 
-    // åˆå§‹åŒ–ç»‘å®šç»“æž„ä½“
+    // ³õÊ¼»¯°ó¶¨½á¹¹Ìå
     MYSQL_BIND bind[3];
     memset(bind, 0, sizeof(bind));
 
-    // è®¾ç½®æ—¶é—´å­—ç¬¦ä¸²é•¿åº¦
+    // ÉèÖÃÊ±¼ä×Ö·û´®³¤¶È
     unsigned long time_length = strlen(time);
 
-    // ç»‘å®šç”¨æˆ·ID
+    // °ó¶¨ÓÃ»§ID
     bind[0].buffer_type = MYSQL_TYPE_LONG;
     bind[0].buffer = &userid;
     bind[0].is_null = 0;
     bind[0].length = 0;
 
-    // ç»‘å®šå›¾ä¹¦ID
+    // °ó¶¨Í¼ÊéID
     bind[1].buffer_type = MYSQL_TYPE_LONG;
     bind[1].buffer = &bookid;
     bind[1].is_null = 0;
     bind[1].length = 0;
 
-    // ç»‘å®šå€Ÿé˜…æ—¶é—´
+    // °ó¶¨½èÔÄÊ±¼ä
     bind[2].buffer_type = MYSQL_TYPE_STRING;
     bind[2].buffer = time;
     bind[2].buffer_length = time_length;
@@ -202,7 +202,7 @@ int AddBorrow(int userid, char* name, int bookid, char* time) {
         return -1;
     }
 
-    // æ›´æ–°å›¾ä¹¦å‰©ä½™æ•°é‡
+    // ¸üÐÂÍ¼ÊéÊ£ÓàÊýÁ¿
     const char* update_query = "UPDATE book SET remaining_quantity = remaining_quantity - 1 WHERE id = ?";
     
     stmt = mysql_stmt_init(conn);
@@ -253,10 +253,40 @@ int DeleteBorrow(int userid,int bookid){
         return -1;
     }
     if (mysql_affected_rows(conn) > 0) {
-        return 0;
     } else {
         return -1;
     }
+    const char* update_query = "UPDATE book SET remaining_quantity = remaining_quantity + 1 WHERE id = ?";
+
+    stmt = mysql_stmt_init(conn);
+    if (mysql_stmt_prepare(stmt, update_query, strlen(update_query))) {
+        fprintf(stderr, "mysql_stmt_prepare() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+    MYSQL_BIND update_bind[1];
+    memset(update_bind, 0, sizeof(update_bind));
+
+    update_bind[0].buffer_type = MYSQL_TYPE_LONG;
+    update_bind[0].buffer = &bookid;
+    update_bind[0].is_null = 0;
+    update_bind[0].length = 0;
+
+    if (mysql_stmt_bind_param(stmt, update_bind)) {
+        fprintf(stderr, "mysql_stmt_bind_param() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+    if (mysql_stmt_execute(stmt)) {
+        fprintf(stderr, "mysql_stmt_execute() failed: %s\n", mysql_error(conn));
+        mysql_stmt_close(stmt);
+        return -1;
+    }
+
+    mysql_stmt_close(stmt);
+    return 0;
 }
 int CheckBorrow(int userid,int bookid){
     char uID[50];
